@@ -120,4 +120,9 @@ public abstract class BaseFragment<P extends Presenter> extends RxFragment imple
     @Override public String target() {
         return presenter.target();
     }
+
+    protected void setTittle(String tittle){
+        BaseActivity baseFragmentActivity = (BaseActivity) getActivity();
+        baseFragmentActivity.setTitle(tittle);
+    }
 }

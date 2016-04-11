@@ -16,9 +16,17 @@
 
 package app.domain.gcm_notifications;
 
+import app.domain.user_demo.User;
 import lombok.Data;
 
 
-@Data public class GcmNotification {
+@Data public class GcmNotification<T> {
+    private final String key, group; //in order to retrieve cache
+    private final T data;
     private final String title, body;
+
+    public boolean isWallType() {
+        return data instanceof User;
+    }
+
 }

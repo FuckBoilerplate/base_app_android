@@ -23,7 +23,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import app.data.sections.gcm_notifications.NotificationRepository;
+import app.data.foundation.GcmNotificationRepository;
 import app.domain.dashboard.ItemMenu;
 import app.presentation.foundation.Presenter;
 import app.presentation.sections.Wireframe;
@@ -32,8 +32,8 @@ import rx.Observable;
 public class DashboardPresenter extends Presenter<DashBoardActivity> {
     private final static int ID_USERS = 1, ID_USER = 2, ID_SEARCH = 3;
 
-    @Inject public DashboardPresenter(Wireframe wireframe, NotificationRepository notificationRepository) {
-        super(wireframe, notificationRepository);
+    @Inject public DashboardPresenter(Wireframe wireframe, GcmNotificationRepository gcmNotificationRepository) {
+        super(wireframe, gcmNotificationRepository);
     }
 
     @Override public void onCreatedView() {

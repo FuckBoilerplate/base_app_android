@@ -18,14 +18,14 @@ package app.presentation.sections.launch;
 
 import javax.inject.Inject;
 
-import app.data.sections.gcm_notifications.NotificationRepository;
+import app.data.foundation.GcmNotificationRepository;
 import app.presentation.foundation.Presenter;
 import app.presentation.sections.Wireframe;
 
 public class LaunchPresenter extends Presenter<LaunchActivity> {
 
-    @Inject public LaunchPresenter(Wireframe wireframe, NotificationRepository notificationRepository) {
-        super(wireframe, notificationRepository);
+    @Inject public LaunchPresenter(Wireframe wireframe, GcmNotificationRepository gcmNotificationRepository) {
+        super(wireframe, gcmNotificationRepository);
     }
 
     @Override public void onCreatedView() {

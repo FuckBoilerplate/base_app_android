@@ -20,7 +20,7 @@ import javax.inject.Inject;
 
 import app.data.cache.RxProviders;
 import app.data.net.RestApi;
-import app.data.sections.foundation.Repository;
+import app.data.foundation.Repository;
 import io.rx_cache.EvictProvider;
 import rx.Observable;
 

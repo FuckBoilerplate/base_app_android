@@ -18,21 +18,21 @@ package app.presentation.foundation.gcm_notifications;
 
 import javax.inject.Inject;
 
-import app.data.sections.gcm_notifications.NotificationRepository;
+import app.data.foundation.GcmNotificationRepository;
 import app.presentation.foundation.BaseApp;
 import rx.Observable;
 import rx_gcm.GcmReceiverData;
 import rx_gcm.Message;
 
 public class GcmReceiver implements GcmReceiverData {
-    @Inject public NotificationRepository notificationRepository;
+    @Inject public GcmNotificationRepository gcmNotificationRepository;
 
     @Override public Observable<Message> onNotification(Observable<Message> oMessage) {
         return oMessage.flatMap(message -> {
             BaseApp baseApp = (BaseApp) message.application();
             baseApp.getPresentationComponent().inject(this);
 
-            return notificationRepository.onNotificationReceived(message);
+            return gcmNotificationRepository.onNotificationReceived(message);
         });
     }
 }

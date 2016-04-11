@@ -57,11 +57,12 @@ public class RecyclerViewPager<T, V extends View & BindView.Binder<T>> {
     }
 
     private void showItems(Observable<List<T>> oItems) {
-        oItems.subscribe(items -> {
-            if (recyclerView.getAdapter() == null) recyclerView.setAdapter(adapter);
+        oItems.doOnCompleted(() -> recyclerView.getProgressView().setVisibility(View.GONE))
+                .subscribe(items -> {
+                    if (recyclerView.getAdapter() == null) recyclerView.setAdapter(adapter);
 
-            adapter.addAll(items);
-        });
+                    adapter.addAll(items);
+                });
     }
 
     private void nextPage(T item) {

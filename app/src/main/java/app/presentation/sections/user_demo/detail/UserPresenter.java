@@ -3,7 +3,7 @@ package app.presentation.sections.user_demo.detail;
 
 import javax.inject.Inject;
 
-import app.data.sections.gcm_notifications.NotificationRepository;
+import app.data.foundation.GcmNotificationRepository;
 import app.domain.user_demo.User;
 import app.presentation.foundation.Presenter;
 import app.presentation.sections.Wireframe;
@@ -11,8 +11,8 @@ import rx.Observable;
 
 public class UserPresenter extends Presenter<UserFragment> {
 
-    @Inject public UserPresenter(Wireframe wireframe, NotificationRepository notificationRepository) {
-        super(wireframe, notificationRepository);
+    @Inject public UserPresenter(Wireframe wireframe, GcmNotificationRepository gcmNotificationRepository) {
+        super(wireframe, gcmNotificationRepository);
     }
 
     @Override public void onCreatedView() {

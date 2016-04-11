@@ -14,22 +14,11 @@
  * limitations under the License.
  */
 
-package app.presentation.sections.launch;
+package app.data.foundation;
 
-import javax.inject.Inject;
+import lombok.Data;
 
-import app.data.foundation.NotificationRepository;
-import app.presentation.foundation.Presenter;
-import app.presentation.sections.Wireframe;
-
-public class LaunchPresenter extends Presenter<LaunchActivity> {
-
-    @Inject public LaunchPresenter(Wireframe wireframe, NotificationRepository notificationRepository) {
-        super(wireframe, notificationRepository);
-    }
-
-    @Override public void onCreatedView() {
-        super.onCreatedView();
-    }
-
+@Data
+public class ResponseString {
+    private final String message;
 }

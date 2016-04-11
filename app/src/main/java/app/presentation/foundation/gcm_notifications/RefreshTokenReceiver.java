@@ -16,21 +16,21 @@
 
 package app.presentation.foundation.gcm_notifications;
 
-import app.data.sections.gcm_notifications.NotificationRepository;
+import app.data.foundation.GcmNotificationRepository;
 import app.presentation.foundation.BaseApp;
 import rx.Observable;
 import rx_gcm.GcmRefreshTokenReceiver;
 import rx_gcm.TokenUpdate;
 
 public class RefreshTokenReceiver implements GcmRefreshTokenReceiver {
-    private NotificationRepository notificationRepository;
+    private GcmNotificationRepository gcmNotificationRepository;
 
     @Override public void onTokenReceive(Observable<TokenUpdate> oTokenUpdate) {
         oTokenUpdate.subscribe(message -> {
             BaseApp baseApp = (BaseApp) message.getApplication();
             baseApp.getPresentationComponent().inject(this);
 
-            notificationRepository.onTokenRefresh(message).subscribe();
+            gcmNotificationRepository.onTokenRefresh(message).subscribe();
         });
     }
 }

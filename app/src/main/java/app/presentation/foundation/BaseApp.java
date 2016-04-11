@@ -19,9 +19,13 @@ package app.presentation.foundation;
 import android.app.Application;
 import android.support.annotation.Nullable;
 
+import app.presentation.foundation.gcm_notifications.GcmReceiver;
+import app.presentation.foundation.gcm_notifications.RefreshTokenReceiver;
+import app.presentation.internal.di.DaggerPresentationComponent;
 import app.presentation.internal.di.PresentationComponent;
 import app.presentation.internal.di.PresentationModule;
-import app.presentation.internal.di.DaggerPresentationComponent;
+import rx_gcm.GcmReceiverUIBackground;
+import rx_gcm.internal.RxGcm;
 
 /**
  * Custom Application
@@ -33,12 +37,20 @@ public class BaseApp extends Application {
         super.onCreate();
         initInject();
         AppCare.YesSir.takeCareOn(this);
+        initGcm();
     }
 
     private void initInject() {
         presentationComponent = DaggerPresentationComponent.builder()
                 .presentationModule(new PresentationModule(this))
                 .build();
+    }
+
+    private void initGcm() {
+        RxGcm.Notifications.register(this, GcmReceiver.class, GcmReceiverUIBackground.class)
+                .subscribe(token -> {}, error -> {});
+
+        RxGcm.Notifications.onRefreshToken(RefreshTokenReceiver.class);
     }
 
     public PresentationComponent getPresentationComponent() {

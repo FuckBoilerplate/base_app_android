@@ -14,18 +14,23 @@
  * limitations under the License.
  */
 
-package app.data.sections.foundation;
+package app.data.foundation;
 
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 import app.data.cache.RxProviders;
 import app.data.net.RestApi;
+import app.domain.gcm_notifications.GcmNotification;
 import lombok.Data;
 import retrofit2.Response;
 import rx.Observable;
+import rx_gcm.Message;
 
 
 public abstract class Repository {
@@ -54,5 +59,17 @@ public abstract class Repository {
 
     protected Observable buildObservableError(String message) {
         return Observable.create(subscriber -> subscriber.onError(new RuntimeException(message)));
+    }
+
+    public <T> Observable<GcmNotification<T>> getMessageFromGcmNotification(Message message) {
+        String payload = message.payload().toString();
+        Type type = new TypeToken<GcmNotification<T>>(){}.getType();
+        GcmNotification<T> gcmNotification = new GsonBuilder().create().fromJson(payload, type);
+        return Observable.just(gcmNotification);
+    }
+
+    public <T> Observable<T> getDataFromGcmNotification(Message message) {
+        return getMessageFromGcmNotification(message)
+                .map(gcmNotification -> (T) gcmNotification.getData());
     }
 }

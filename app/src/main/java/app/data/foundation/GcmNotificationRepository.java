@@ -14,30 +14,20 @@
  * limitations under the License.
  */
 
-package app.data.sections.gcm_notifications;
-
-import com.google.gson.GsonBuilder;
+package app.data.foundation;
 
 import javax.inject.Inject;
 
 import app.data.cache.RxProviders;
 import app.data.net.RestApi;
-import app.data.sections.foundation.Repository;
-import app.domain.gcm_notifications.GcmNotification;
 import rx.Observable;
 import rx_gcm.Message;
 import rx_gcm.TokenUpdate;
 
-public class NotificationRepository extends Repository {
+public class GcmNotificationRepository extends Repository {
 
-    @Inject public NotificationRepository(RestApi restApi, RxProviders rxProviders) {
+    @Inject public GcmNotificationRepository(RestApi restApi, RxProviders rxProviders) {
         super(restApi, rxProviders);
-    }
-
-    public Observable<GcmNotification> getMessageFromGcmNotification(Message message) {
-        String payload = message.payload().toString();
-        GcmNotification gcmNotification = new GsonBuilder().create().fromJson(payload, GcmNotification.class);
-        return Observable.just(gcmNotification);
     }
 
     public Observable<Void> onTokenRefresh(TokenUpdate tokenUpdate) {

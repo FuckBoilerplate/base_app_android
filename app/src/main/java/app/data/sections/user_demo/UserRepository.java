@@ -37,7 +37,7 @@ public class UserRepository extends Repository {
     }
 
     public Observable<User> searchByUserName(final String  username) {
-        return restApi.getUser(username).map(response -> {
+        return restApi.getUserByName(username).map(response -> {
             handleError(response);
             final User user = response.body();
             return user;

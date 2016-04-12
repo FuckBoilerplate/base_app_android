@@ -35,9 +35,8 @@ public interface RestApi {
     String HEADER_API_VERSION = "Accept: application/vnd.github.v3+json";
 
     @Headers({HEADER_API_VERSION})
-    @GET("/users/{username}") Observable<Response<User>> getUser(@Path("username") String username);
+    @GET("/users/{username}") Observable<Response<User>> getUserByName(@Path("username") String username);
 
     @Headers({HEADER_API_VERSION})
     @GET("/users") Observable<Response<List<User>>> getUsers(@Query("since") int lastIdQueried, @Query("per_page") int perPage);
-
 }

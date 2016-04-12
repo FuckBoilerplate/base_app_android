@@ -18,6 +18,7 @@ package app.data.foundation.dagger;
 
 import javax.inject.Singleton;
 
+import app.data.foundation.net.RestApiMock;
 import dagger.Module;
 import dagger.Provides;
 import app.data.foundation.cache.RxProviders;
@@ -35,6 +36,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class DataModule {
 
     @Singleton @Provides RestApi provideRestApi() {
+        boolean mockMode = false;
+        if (mockMode) return new RestApiMock();
+
         return new Retrofit.Builder()
                 .baseUrl(RestApi.URL_BASE)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

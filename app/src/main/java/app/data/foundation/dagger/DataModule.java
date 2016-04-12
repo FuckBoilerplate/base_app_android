@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package app.data.internal.di;
+package app.data.foundation.dagger;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import app.data.cache.RxProviders;
-import app.data.net.RestApi;
+import app.data.foundation.cache.RxProviders;
+import app.data.foundation.net.RestApi;
 import io.rx_cache.internal.RxCache;
 import app.presentation.foundation.BaseApp;
 import retrofit2.Retrofit;

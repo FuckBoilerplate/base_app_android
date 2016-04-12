@@ -14,23 +14,11 @@
  * limitations under the License.
  */
 
-package app.presentation.internal.di;
+package app.data.foundation.net;
 
-import javax.inject.Singleton;
+import lombok.Data;
 
-import dagger.Module;
-import dagger.Provides;
-import app.data.internal.di.DataModule;
-import app.presentation.foundation.BaseApp;
-
-@Module(includes = DataModule.class) public class PresentationModule {
-    private final BaseApp baseApp;
-
-    public PresentationModule(BaseApp baseApp) {
-        this.baseApp = baseApp;
-    }
-
-    @Provides @Singleton BaseApp provideApplication() {
-        return baseApp;
-    }
+@Data
+public class ResponseString {
+    private final String message;
 }

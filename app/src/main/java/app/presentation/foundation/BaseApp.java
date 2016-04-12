@@ -19,11 +19,12 @@ package app.presentation.foundation;
 import android.app.Application;
 import android.support.annotation.Nullable;
 
-import app.data.foundation.GcmMessageReceiver;
-import app.data.foundation.GcmTokenReceiver;
-import app.presentation.internal.di.DaggerPresentationComponent;
-import app.presentation.internal.di.PresentationComponent;
-import app.presentation.internal.di.PresentationModule;
+import app.data.foundation.gcm.GcmMessageReceiver;
+import app.data.foundation.gcm.GcmTokenReceiver;
+import app.presentation.foundation.dagger.DaggerPresentationComponent;
+import app.presentation.foundation.dagger.PresentationComponent;
+import app.presentation.foundation.dagger.PresentationModule;
+import app.presentation.foundation.views.BaseActivity;
 import rx_gcm.GcmReceiverUIBackground;
 import rx_gcm.internal.RxGcm;
 

@@ -21,8 +21,8 @@ import org.base_app_android.R;
 import butterknife.Bind;
 import butterknife.OnClick;
 import app.domain.user_demo.User;
-import app.presentation.foundation.BaseFragment;
-import app.presentation.foundation.LayoutResFragment;
+import app.presentation.foundation.views.BaseFragment;
+import app.presentation.foundation.views.LayoutResFragment;
 import app.presentation.sections.user_demo.UserViewGroup;
 import rx.Observable;
 

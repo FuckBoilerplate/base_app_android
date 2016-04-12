@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package app.data.cache;
+package app.data.foundation.cache;
 
 import io.rx_cache.EvictProvider;
 import rx.Observable;

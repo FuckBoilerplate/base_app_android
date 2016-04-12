@@ -24,9 +24,9 @@ import com.malinskiy.superrecyclerview.SuperRecyclerView;
 import org.base_app_android.R;
 
 import app.domain.user_demo.User;
-import app.presentation.foundation.BaseFragment;
-import app.presentation.foundation.LayoutResFragment;
-import app.presentation.foundation.RecyclerViewPager;
+import app.presentation.foundation.views.BaseFragment;
+import app.presentation.foundation.views.LayoutResFragment;
+import app.presentation.foundation.views.RecyclerViewPager;
 import app.presentation.sections.user_demo.UserViewGroup;
 import butterknife.Bind;
 import library.recycler_view.OkRecyclerViewAdapter;

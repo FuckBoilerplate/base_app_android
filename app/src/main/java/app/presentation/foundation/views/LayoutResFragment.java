@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package app.data.cache;
+package app.presentation.foundation.views;
 
-import java.util.List;
+import android.support.annotation.LayoutRes;
 
-import app.domain.user_demo.User;
-import io.rx_cache.DynamicKey;
-import io.rx_cache.EvictProvider;
-import io.rx_cache.Reply;
-import rx.Observable;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Providers for RxCache
+ * Sets the layout resource for every Fragment which extends from BasePresenterFragment
+ * @see BaseFragment
  */
-public interface RxProviders {
-    <T> Observable<T> getWireframeCurrentObject(Observable<T> oObject, EvictProvider evictProvider);
-    Observable<Reply<List<User>>> getUsers(Observable<List<User>> oUsers, DynamicKey dynamicKey, EvictProvider evictProvider);
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface LayoutResFragment {
+    @LayoutRes int value();
 }
-

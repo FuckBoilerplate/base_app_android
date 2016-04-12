@@ -1,4 +1,4 @@
-package app.data.foundation;
+package app.data.foundation.gcm;
 
 import javax.inject.Inject;
 

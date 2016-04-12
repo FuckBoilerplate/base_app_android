@@ -21,8 +21,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import app.data.cache.RxProviders;
-import app.data.net.RestApi;
+import app.data.foundation.cache.RxProviders;
+import app.data.foundation.net.RestApi;
 import app.data.foundation.Repository;
 import app.domain.user_demo.User;
 import io.rx_cache.DynamicKey;

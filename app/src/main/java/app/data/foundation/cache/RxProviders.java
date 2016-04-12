@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-package app.presentation.foundation;
+package app.data.foundation.cache;
 
+import java.util.List;
 
-import org.base_app_android.R;
+import app.domain.user_demo.User;
+import io.rx_cache.DynamicKey;
+import io.rx_cache.EvictProvider;
+import io.rx_cache.Reply;
+import rx.Observable;
 
-@LayoutResActivity(R.layout.single_fragment_activity)
-public class SingleActivity extends BaseActivity {
-
-    @Override protected void injectDagger() {
-        presenter = new Presenter(null) {};
-    }
-
+/**
+ * Providers for RxCache
+ */
+public interface RxProviders {
+    <T> Observable<T> getWireframeCurrentObject(Observable<T> oObject, EvictProvider evictProvider);
+    Observable<Reply<List<User>>> getUsers(Observable<List<User>> oUsers, DynamicKey dynamicKey, EvictProvider evictProvider);
 }
+

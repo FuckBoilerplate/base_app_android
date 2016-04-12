@@ -18,8 +18,8 @@ package app.data.sections;
 
 import javax.inject.Inject;
 
-import app.data.cache.RxProviders;
-import app.data.net.RestApi;
+import app.data.foundation.cache.RxProviders;
+import app.data.foundation.net.RestApi;
 import app.data.foundation.Repository;
 import io.rx_cache.EvictProvider;
 import rx.Observable;

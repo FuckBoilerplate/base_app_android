@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package app.presentation.foundation;
+package app.presentation.foundation.views;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,8 +28,9 @@ import com.trello.rxlifecycle.components.support.RxFragment;
 
 import javax.inject.Inject;
 
+import app.presentation.foundation.Presenter;
 import butterknife.ButterKnife;
-import app.presentation.internal.di.PresentationComponent;
+import app.presentation.foundation.dagger.PresentationComponent;
 import rx.Observable;
 import rx_gcm.GcmReceiverUIForeground;
 import rx_gcm.Message;

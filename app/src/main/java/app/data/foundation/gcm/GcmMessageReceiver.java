@@ -1,8 +1,5 @@
-package app.data.foundation;
+package app.data.foundation.gcm;
 
-import javax.inject.Inject;
-
-import app.domain.gcm_notifications.GcmNotification;
 import app.presentation.foundation.BaseApp;
 import rx.Observable;
 import rx_gcm.GcmReceiverData;

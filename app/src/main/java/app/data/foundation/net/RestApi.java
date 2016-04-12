@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package app.data.net;
+package app.data.foundation.net;
 
 import java.util.List;
 

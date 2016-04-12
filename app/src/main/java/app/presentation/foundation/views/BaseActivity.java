@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package app.presentation.foundation;
+package app.presentation.foundation.views;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -38,9 +38,11 @@ import java.io.Serializable;
 
 import javax.inject.Inject;
 
+import app.presentation.foundation.BaseApp;
+import app.presentation.foundation.Presenter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import app.presentation.internal.di.PresentationComponent;
+import app.presentation.foundation.dagger.PresentationComponent;
 import rx.Observable;
 
 public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActivity implements BaseView {

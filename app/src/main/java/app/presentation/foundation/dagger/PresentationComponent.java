@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package app.presentation.internal.di;
+package app.presentation.foundation.dagger;
 
 import javax.inject.Singleton;
 
-import app.data.foundation.GcmMessageReceiver;
-import app.data.foundation.GcmTokenReceiver;
+import app.data.foundation.gcm.GcmMessageReceiver;
+import app.data.foundation.gcm.GcmTokenReceiver;
 import app.presentation.sections.dashboard.DashBoardActivity;
 import app.presentation.sections.launch.LaunchActivity;
 import app.presentation.sections.user_demo.detail.UserFragment;

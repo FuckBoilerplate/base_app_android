@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package app.presentation.foundation.gcm_notifications;
+package app.presentation.foundation.gcm;
 
 import android.app.Application;
 import android.app.Notification;
@@ -25,7 +25,7 @@ import android.support.v4.app.NotificationCompat;
 
 import org.base_app_android.R;
 
-import app.domain.gcm_notifications.GcmNotification;
+import app.domain.foundation.gcm.GcmNotification;
 import app.presentation.foundation.BaseApp;
 import rx.Observable;
 import rx_gcm.GcmReceiverUIBackground;

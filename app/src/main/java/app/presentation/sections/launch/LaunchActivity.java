@@ -16,7 +16,7 @@
 
 package app.presentation.sections.launch;
 
-import app.presentation.foundation.BaseActivity;
+import app.presentation.foundation.views.BaseActivity;
 
 public class LaunchActivity extends BaseActivity<LaunchPresenter> {
 

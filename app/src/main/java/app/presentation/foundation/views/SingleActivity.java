@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-package app.presentation.foundation;
+package app.presentation.foundation.views;
 
-import android.support.annotation.LayoutRes;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.base_app_android.R;
 
-/**
- * Sets the layout resource for every Fragment which extends from BasePresenterFragment
- * @see BaseFragment
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface LayoutResFragment {
-    @LayoutRes int value();
+import app.presentation.foundation.Presenter;
+
+@LayoutResActivity(R.layout.single_fragment_activity)
+public class SingleActivity extends BaseActivity {
+
+    @Override protected void injectDagger() {
+        presenter = new Presenter(null) {};
+    }
+
 }

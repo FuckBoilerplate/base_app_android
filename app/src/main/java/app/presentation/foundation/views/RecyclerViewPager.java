@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package app.presentation.foundation;
+package app.presentation.foundation.views;
 
 import android.view.View;
 

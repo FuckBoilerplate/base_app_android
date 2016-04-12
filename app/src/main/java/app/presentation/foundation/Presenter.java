@@ -21,7 +21,10 @@ import android.support.annotation.StringRes;
 
 import com.trello.rxlifecycle.RxLifecycle;
 
-import app.domain.gcm_notifications.GcmNotification;
+import app.domain.foundation.gcm.GcmNotification;
+import app.presentation.foundation.views.BaseActivity;
+import app.presentation.foundation.views.BaseFragment;
+import app.presentation.foundation.views.BaseView;
 import app.presentation.sections.Wireframe;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;

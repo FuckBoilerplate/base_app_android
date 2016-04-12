@@ -21,8 +21,8 @@ import com.google.gson.JsonParseException;
 
 import java.io.IOException;
 
-import app.data.cache.RxProviders;
-import app.data.net.RestApi;
+import app.data.foundation.cache.RxProviders;
+import app.data.foundation.net.RestApi;
 import lombok.Data;
 import retrofit2.Response;
 import rx.Observable;

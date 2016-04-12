@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package app.domain.gcm_notifications;
+package app.domain.foundation.gcm;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;

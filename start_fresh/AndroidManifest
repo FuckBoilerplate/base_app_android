@@ -22,7 +22,7 @@
         </activity>
 
         <activity
-            android:name="app.presentation.foundation.SingleActivity"
+            android:name="app.presentation.foundation.views.SingleActivity"
             android:screenOrientation="portrait" />
 
     </application>

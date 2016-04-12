@@ -24,9 +24,9 @@ import org.base_app_android.R;
 import javax.inject.Inject;
 
 import app.data.sections.WireframeRepository;
-import app.presentation.foundation.BaseActivity;
+import app.presentation.foundation.views.BaseActivity;
 import app.presentation.foundation.BaseApp;
-import app.presentation.foundation.SingleActivity;
+import app.presentation.foundation.views.SingleActivity;
 import app.presentation.sections.dashboard.DashBoardActivity;
 import app.presentation.sections.user_demo.detail.UserFragment;
 import app.presentation.sections.user_demo.search.SearchUserFragment;

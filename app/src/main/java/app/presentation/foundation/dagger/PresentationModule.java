@@ -14,13 +14,23 @@
  * limitations under the License.
  */
 
-package app.presentation.foundation;
+package app.presentation.foundation.dagger;
 
-import rx.Observable;
+import javax.inject.Singleton;
 
-public interface BaseView {
-    void showToast(Observable<String> oTitle);
-    void showSnackBar(Observable<String> oTitle);
-    void showLoading();
-    void hideLoading();
+import dagger.Module;
+import dagger.Provides;
+import app.data.foundation.dagger.DataModule;
+import app.presentation.foundation.BaseApp;
+
+@Module(includes = DataModule.class) public class PresentationModule {
+    private final BaseApp baseApp;
+
+    public PresentationModule(BaseApp baseApp) {
+        this.baseApp = baseApp;
+    }
+
+    @Provides @Singleton BaseApp provideApplication() {
+        return baseApp;
+    }
 }

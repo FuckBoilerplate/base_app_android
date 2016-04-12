@@ -23,7 +23,7 @@ import org.base_app_android.R;
 public class SingleActivity extends BaseActivity {
 
     @Override protected void injectDagger() {
-        presenter = new Presenter(null, null) {};
+        presenter = new Presenter(null) {};
     }
 
 }

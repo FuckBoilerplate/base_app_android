@@ -25,21 +25,19 @@ import android.support.v4.app.NotificationCompat;
 
 import org.base_app_android.R;
 
-import app.data.foundation.GcmNotificationRepository;
+import app.domain.gcm_notifications.GcmNotification;
 import app.presentation.foundation.BaseApp;
 import rx.Observable;
 import rx_gcm.GcmReceiverUIBackground;
 import rx_gcm.Message;
 
 public class GcmReceiverBackground implements GcmReceiverUIBackground {
-    private GcmNotificationRepository gcmNotificationRepository;
 
     @Override public void onNotification(Observable<Message> oMessage) {
         oMessage.subscribe(message -> {
             BaseApp baseApp = (BaseApp) message.application();
-            baseApp.getPresentationComponent().inject(this);
 
-            gcmNotificationRepository.getMessageFromGcmNotification(message).subscribe(gcmNotification -> {
+            GcmNotification.getMessageFromGcmNotification(message).subscribe(gcmNotification -> {
                 showNotification(message, gcmNotification.getTitle(), gcmNotification.getBody(), baseApp);
             });
         });

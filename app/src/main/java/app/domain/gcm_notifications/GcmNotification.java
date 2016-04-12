@@ -16,14 +16,33 @@
 
 package app.domain.gcm_notifications;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.GsonBuilder;
+
+import java.lang.reflect.Type;
+
 import app.domain.user_demo.User;
 import lombok.Data;
+import rx.Observable;
+import rx_gcm.Message;
 
 
 @Data public class GcmNotification<T> {
     private final String key, group; //in order to retrieve cache
     private final T data;
     private final String title, body;
+
+    public static <T> Observable<GcmNotification<T>> getMessageFromGcmNotification(Message message) {
+        String payload = message.payload().toString();
+        Type type = new TypeToken<GcmNotification<T>>(){}.getType();
+        GcmNotification<T> gcmNotification = new GsonBuilder().create().fromJson(payload, type);
+        return Observable.just(gcmNotification);
+    }
+
+    public static <T> Observable<T> getDataFromGcmNotification(Message message) {
+        return getMessageFromGcmNotification(message)
+                .map(gcmNotification -> (T) gcmNotification.getData());
+    }
 
     public boolean isWallType() {
         return data instanceof User;

@@ -21,7 +21,7 @@ import android.support.annotation.StringRes;
 
 import com.trello.rxlifecycle.RxLifecycle;
 
-import app.data.foundation.GcmNotificationRepository;
+import app.domain.gcm_notifications.GcmNotification;
 import app.presentation.sections.Wireframe;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -32,11 +32,9 @@ import rx_gcm.Message;
 public abstract class Presenter<V extends BaseView> {
     protected V view;
     protected final Wireframe wireframe;
-    protected final GcmNotificationRepository gcmNotificationRepository;
 
-    protected Presenter(Wireframe wireframe, GcmNotificationRepository gcmNotificationRepository) {
+    protected Presenter(Wireframe wireframe) {
         this.wireframe = wireframe;
-        this.gcmNotificationRepository = gcmNotificationRepository;
     }
 
     public void attachView(V view) {
@@ -108,7 +106,7 @@ public abstract class Presenter<V extends BaseView> {
 
     public void onMismatchTargetNotification(Observable<Message> oMessage) {
         Observable<String> oGcmNotification = oMessage
-                .flatMap(message -> gcmNotificationRepository.getMessageFromGcmNotification(message))
+                .flatMap(GcmNotification::getMessageFromGcmNotification)
                 .map(gcmNotification -> gcmNotification.getTitle() + System.lineSeparator() + gcmNotification.getBody());
 
         view.showToast(oGcmNotification);

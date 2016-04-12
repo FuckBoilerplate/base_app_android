@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import javax.inject.Inject;
 
-import app.data.foundation.GcmNotificationRepository;
 import app.data.sections.user_demo.UserRepository;
 import app.domain.user_demo.User;
 import app.presentation.foundation.Presenter;
@@ -18,8 +17,8 @@ public class SearchUserPresenter extends Presenter<SearchUserFragment> {
     private final UserRepository userRepository;
     public static final String HELLO_FROM_BUNDLE_WIREFRAME_KEY = "hello_from_bundle_key";
 
-    @Inject public SearchUserPresenter(Wireframe wireframe, GcmNotificationRepository gcmNotificationRepository, UserRepository userRepository) {
-        super(wireframe, gcmNotificationRepository);
+    @Inject public SearchUserPresenter(Wireframe wireframe, UserRepository userRepository) {
+        super(wireframe);
         this.userRepository = userRepository;
     }
 

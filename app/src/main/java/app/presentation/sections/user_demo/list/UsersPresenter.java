@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import app.data.foundation.GcmNotificationRepository;
 import app.data.sections.user_demo.UserRepository;
 import app.domain.user_demo.User;
 import app.presentation.foundation.Presenter;
@@ -17,8 +16,8 @@ import rx.Observable;
 public class UsersPresenter extends Presenter<UsersFragment> {
     private final UserRepository repository;
 
-    @Inject public UsersPresenter(Wireframe wireframe, GcmNotificationRepository gcmNotificationRepository, UserRepository repository) {
-        super(wireframe, gcmNotificationRepository);
+    @Inject public UsersPresenter(Wireframe wireframe, UserRepository repository) {
+        super(wireframe);
         this.repository = repository;
     }
 

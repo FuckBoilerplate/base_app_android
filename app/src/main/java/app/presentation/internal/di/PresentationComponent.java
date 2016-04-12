@@ -18,15 +18,14 @@ package app.presentation.internal.di;
 
 import javax.inject.Singleton;
 
-import dagger.Component;
+import app.data.foundation.GcmMessageReceiver;
+import app.data.foundation.GcmTokenReceiver;
 import app.presentation.sections.dashboard.DashBoardActivity;
-import app.presentation.foundation.gcm_notifications.GcmReceiver;
-import app.presentation.foundation.gcm_notifications.GcmReceiverBackground;
-import app.presentation.foundation.gcm_notifications.RefreshTokenReceiver;
 import app.presentation.sections.launch.LaunchActivity;
 import app.presentation.sections.user_demo.detail.UserFragment;
 import app.presentation.sections.user_demo.list.UsersFragment;
 import app.presentation.sections.user_demo.search.SearchUserFragment;
+import dagger.Component;
 
 /**
  * Every fragment or activity which needs to be part of the dependency system provided by Dagger needs
@@ -41,7 +40,6 @@ public interface PresentationComponent {
     void inject(UsersFragment usersFragment);
     void inject(SearchUserFragment searchUserFragment);
 
-    void inject(GcmReceiver gcmReceiver);
-    void inject(GcmReceiverBackground gcmReceiverBackground);
-    void inject(RefreshTokenReceiver refreshTokenReceiver);
+    void inject(GcmTokenReceiver gcmTokenReceiver);
+    void inject(GcmMessageReceiver gcmMessageReceiver);
 }

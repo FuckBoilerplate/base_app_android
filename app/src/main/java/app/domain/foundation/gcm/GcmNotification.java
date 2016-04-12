@@ -21,7 +21,6 @@ import com.google.gson.GsonBuilder;
 
 import java.lang.reflect.Type;
 
-import app.domain.user_demo.User;
 import lombok.Data;
 import rx.Observable;
 import rx_gcm.Message;
@@ -43,9 +42,4 @@ import rx_gcm.Message;
         return getMessageFromGcmNotification(message)
                 .map(gcmNotification -> (T) gcmNotification.getData());
     }
-
-    public boolean isWallType() {
-        return data instanceof User;
-    }
-
 }

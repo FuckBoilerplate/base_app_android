@@ -153,8 +153,9 @@ task('freshStart') << {
     String data = "app/src/main/java/app/data/"
     Helper.removeDir(data+"sections/user_demo")
 
-    Helper.moveFileDeleting(startFresh+"RestApi", data+"net/", "RestApi.java")
-    Helper.moveFileDeleting(startFresh+"RxProviders", data+"cache/", "RxProviders.java")
+    Helper.moveFileDeleting(startFresh+"RestApi", data+"foundation/net/", "RestApi.java")
+    Helper.moveFileDeleting(startFresh+"RestApiMock", data+"foundation/net/", "RestApiMock.java")
+    Helper.moveFileDeleting(startFresh+"RxProviders", data+"foundation/cache/", "RxProviders.java")
 
     String domain = "app/src/main/java/app/domain/"
     Helper.removeDir(domain+"user_demo")
@@ -163,7 +164,7 @@ task('freshStart') << {
     String presentation = "app/src/main/java/app/presentation/"
     Helper.removeDir(presentation+"sections/user_demo")
     Helper.removeDir(presentation+"sections/dashboard")
-    Helper.moveFileDeleting(startFresh+"PresentationComponent", presentation+"internal/di/", "PresentationComponent.java")
+    Helper.moveFileDeleting(startFresh+"PresentationComponent", presentation+"foundation/dagger/", "PresentationComponent.java")
     Helper.moveFileDeleting(startFresh+"LaunchPresenter", presentation+"sections/launch/", "LaunchPresenter.java")
 
     Helper.moveFileDeleting(startFresh+"Wireframe", presentation+"sections", "Wireframe.java")
@@ -181,6 +182,9 @@ task('freshStart') << {
     Helper.removeDir(presentationTest+"sections/user_demo")
     Helper.removeDir(presentationTest+"sections/dashboard")
     Helper.moveFileDeleting(startFresh+"SuiteIntegration", presentationTest+"common/", "SuiteIntegration.java")
+
+    String unitTest = "app/src/test/java/app/"
+    Helper.moveFileDeleting(startFresh+"RestApiTest", unitTest+"data/foundation/", "RestApiTest.java")
 
     Helper.moveFileDeleting(startFresh+"README.md", ".", "README.md")
     Helper.moveFileDeleting(startFresh+"LICENSE", ".", "LICENSE")

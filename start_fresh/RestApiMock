@@ -14,21 +14,8 @@
  * limitations under the License.
  */
 
-package app.presentation.sections.launch;
+package app.data.foundation.net;
 
-import javax.inject.Inject;
-
-import app.presentation.foundation.Presenter;
-import app.presentation.sections.Wireframe;
-
-public class LaunchPresenter extends Presenter<LaunchActivity> {
-
-    @Inject public LaunchPresenter(Wireframe wireframe) {
-        super(wireframe);
-    }
-
-    @Override public void onCreatedView() {
-        super.onCreatedView();
-    }
+public class RestApiMock implements RestApi {
 
 }

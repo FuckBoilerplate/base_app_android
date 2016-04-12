@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package app.presentation.internal.di;
+package app.presentation.foundation.dagger;
 
 import javax.inject.Singleton;
 
-import app.presentation.foundation.gcm_notifications.GcmReceiver;
-import app.presentation.foundation.gcm_notifications.GcmReceiverBackground;
-import app.presentation.foundation.gcm_notifications.RefreshTokenReceiver;
+import app.data.foundation.gcm.GcmMessageReceiver;
+import app.data.foundation.gcm.GcmTokenReceiver;
 import app.presentation.sections.launch.LaunchActivity;
 import dagger.Component;
 
@@ -32,7 +31,6 @@ import dagger.Component;
 public interface PresentationComponent {
     void inject(LaunchActivity launchActivity);
 
-    void inject(GcmReceiver gcmReceiver);
-    void inject(GcmReceiverBackground gcmReceiverBackground);
-    void inject(RefreshTokenReceiver refreshTokenReceiver);
+    void inject(GcmTokenReceiver gcmTokenReceiver);
+    void inject(GcmMessageReceiver gcmMessageReceiver);
 }

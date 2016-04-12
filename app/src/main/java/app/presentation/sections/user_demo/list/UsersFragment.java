@@ -26,7 +26,7 @@ import org.base_app_android.R;
 import app.domain.user_demo.User;
 import app.presentation.foundation.views.BaseFragment;
 import app.presentation.foundation.views.LayoutResFragment;
-import app.presentation.foundation.views.RecyclerViewPager;
+import app.presentation.foundation.views.RecyclerViewPaginated;
 import app.presentation.sections.user_demo.UserViewGroup;
 import butterknife.Bind;
 import library.recycler_view.OkRecyclerViewAdapter;
@@ -36,7 +36,7 @@ import library.recycler_view.OkRecyclerViewAdapter;
 public class UsersFragment extends BaseFragment<UsersPresenter>  {
     @Bind(R.id.rv_users) protected SuperRecyclerView rv_users;
     private OkRecyclerViewAdapter<User, UserViewGroup> adapter;
-    private RecyclerViewPager<User, UserViewGroup> recyclerViewPager;
+    private RecyclerViewPaginated<User, UserViewGroup> recyclerViewPaginated;
 
     @Override protected void injectDagger() {
         getApplicationComponent().inject(this);
@@ -59,9 +59,9 @@ public class UsersFragment extends BaseFragment<UsersPresenter>  {
 
         adapter.setOnItemClickListener((user, userViewGroup) -> presenter.goToDetail(user));
 
-        recyclerViewPager = new RecyclerViewPager(rv_users, adapter);
-        recyclerViewPager.setLoaderPager(user -> presenter.nextPage(user));
-        recyclerViewPager.setResetPager(() -> presenter.refreshList());
+        recyclerViewPaginated = new RecyclerViewPaginated(rv_users, adapter);
+        recyclerViewPaginated.setLoaderPager(user -> presenter.nextPage(user));
+        recyclerViewPaginated.setResetPager(() -> presenter.refreshList());
     }
 
 }

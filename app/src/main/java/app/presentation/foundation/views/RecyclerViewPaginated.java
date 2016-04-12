@@ -26,13 +26,13 @@ import library.recycler_view.BindView;
 import library.recycler_view.OkRecyclerViewAdapter;
 import rx.Observable;
 
-public class RecyclerViewPager<T, V extends View & BindView.Binder<T>> {
+public class RecyclerViewPaginated<T, V extends View & BindView.Binder<T>> {
     private final SuperRecyclerView recyclerView;
     private final OkRecyclerViewAdapter<T, V> adapter;
     private LoaderPager<T> loaderPager;
     private boolean allLoaded;
 
-    public RecyclerViewPager(SuperRecyclerView recyclerView, OkRecyclerViewAdapter<T, V> adapter) {
+    public RecyclerViewPaginated(SuperRecyclerView recyclerView, OkRecyclerViewAdapter<T, V> adapter) {
         this.recyclerView = recyclerView;
         this.adapter = adapter;
     }

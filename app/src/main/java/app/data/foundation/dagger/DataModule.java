@@ -18,13 +18,13 @@ package app.data.foundation.dagger;
 
 import javax.inject.Singleton;
 
-import app.data.foundation.net.RestApiMock;
-import dagger.Module;
-import dagger.Provides;
 import app.data.foundation.cache.RxProviders;
 import app.data.foundation.net.RestApi;
-import io.rx_cache.internal.RxCache;
+import app.data.foundation.net.RestApiMock;
 import app.presentation.foundation.BaseApp;
+import dagger.Module;
+import dagger.Provides;
+import io.rx_cache.internal.RxCache;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -35,8 +35,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class DataModule {
 
-    @Singleton @Provides RestApi provideRestApi() {
-        boolean mockMode = false;
+    @Singleton @Provides public RestApi provideRestApi() {
+        boolean mockMode = false; //BuildConfig.DEBUG;
         if (mockMode) return new RestApiMock();
 
         return new Retrofit.Builder()

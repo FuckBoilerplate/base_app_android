@@ -23,12 +23,10 @@ import org.junit.runners.MethodSorters;
 
 import java.util.List;
 
+import app.data.foundation.dagger.DataModule;
 import app.data.foundation.net.RestApi;
 import app.domain.user_demo.User;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 import rx.observers.TestSubscriber;
 
 import static junit.framework.Assert.assertNull;
@@ -42,11 +40,7 @@ public class RestApiTest {
     private RestApi restApiUT;
 
     @Before public void setUp() {
-        restApiUT = new Retrofit.Builder()
-                .baseUrl(RestApi.URL_BASE)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build().create(RestApi.class);
+        restApiUT = new DataModule().provideRestApi();
     }
 
     @Test public void _1_When_Get_User_With_Valid_User_Name_Then_Get_UserDemo() {

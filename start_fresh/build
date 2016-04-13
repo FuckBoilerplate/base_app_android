@@ -76,66 +76,44 @@ android {
     }
 }
 
-ext {
-    versions = [
-            retrofit: "2.0.0-beta4",
-            support: "23.2.0",
-            dagger: "2.0.2",
-            javax_annotation: "10.0-b28",
-            rx_java: "1.1.0",
-            rx_android: "1.0.1",
-            rx_cache: "1.2.6",
-            rx_gcm: "0.2.1",
-            lombok: "1.16.6",
-            picasso: "2.5.2",
-            materialishProgress: "1.7",
-            materialDialog: "0.8.5.6@aar",
-            butterKnife: "7.0.1",
-            rxlifecycle: "0.5.0",
-            superrecyclerview: "1.1.3",
-            okAdapters: "0.0.1",
-            supportTest: "0.4.1",
-            espresso: "2.2.1"
-    ]
-}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     //Common
-    apt "com.google.dagger:dagger-compiler:${versions.dagger}"
-    compile "com.google.dagger:dagger:${versions.dagger}"
-    provided "org.glassfish:javax.annotation:${versions.javax_annotation}"
-    compile "com.github.VictorAlbertos:RxGcm:${versions.rx_gcm}"
+    apt "com.google.dagger:dagger-compiler:2.0.2"
+    compile "com.google.dagger:dagger:2.0.2"
+    provided "org.glassfish:javax.annotation:10.0-b28"
+    compile "com.github.VictorAlbertos:RxGcm:0.2.1"
 
     //Data layer
-    compile "com.squareup.retrofit2:retrofit:${versions.retrofit}"
-    compile "com.squareup.retrofit2:adapter-rxjava:${versions.retrofit}"
-    compile "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
-    compile "com.github.VictorAlbertos:RxCache:${versions.rx_cache}"
-    compile "org.projectlombok:lombok:${versions.lombok}"
+    compile "com.squareup.retrofit2:retrofit:2.0.0-beta4"
+    compile "com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4"
+    compile "com.squareup.retrofit2:converter-gson:2.0.0-beta4"
+    compile "com.github.VictorAlbertos:RxCache:1.2.6"
+    compile "org.projectlombok:lombok:1.16.6"
 
     //Presentation layer
-    compile "com.android.support:appcompat-v7:${versions.support}"
-    compile "com.android.support:design:${versions.support}"
-    compile "io.reactivex:rxandroid:${versions.rx_android}"
-    compile "com.squareup.picasso:picasso:${versions.rx_android}"
-    compile "com.squareup.picasso:picasso:${versions.picasso}"
-    compile "com.malinskiy:superrecyclerview:${versions.superrecyclerview}"
-    compile "com.pnikosis:materialish-progress:${versions.materialishProgress}"
-    compile ("com.github.afollestad.material-dialogs:core:${versions.materialDialog}") {
+    compile "com.android.support:appcompat-v7:23.3.0"
+    compile "com.android.support:design:23.3.0"
+    compile "io.reactivex:rxandroid:1.0.1"
+    compile "com.squareup.picasso:picasso:1.0.1"
+    compile "com.squareup.picasso:picasso:2.5.2"
+    compile "com.malinskiy:superrecyclerview:1.1.3"
+    compile "com.pnikosis:materialish-progress:1.7"
+    compile ("com.github.afollestad.material-dialogs:core:0.8.5.6@aar") {
         transitive = true
     }
-    compile "com.jakewharton:butterknife:${versions.butterKnife}"
-    compile "com.trello:rxlifecycle:${versions.rxlifecycle}"
-    compile "com.trello:rxlifecycle-components:${versions.rxlifecycle}"
-    compile "com.github.FuckBoilerplate:OkAdapters:${versions.okAdapters}"
+    compile "com.jakewharton:butterknife:7.0.1"
+    compile "com.trello:rxlifecycle:0.5.0"
+    compile "com.trello:rxlifecycle-components:0.5.0"
+    compile "com.github.FuckBoilerplate:OkAdapters:0.0.3"
 
     //Testing
     testCompile 'junit:junit:4.12'
-    androidTestCompile "com.android.support.test:runner:${versions.supportTest}"
-    androidTestCompile "com.android.support.test:rules:${versions.supportTest}"
-    androidTestCompile ("com.android.support.test.espresso:espresso-contrib:${versions.espresso}") {
+    androidTestCompile "com.android.support.test:runner:0.4.1"
+    androidTestCompile "com.android.support.test:rules:0.4.1"
+    androidTestCompile ("com.android.support.test.espresso:espresso-contrib:2.2.1") {
         exclude module: 'support-annotations'
         exclude module: 'support-v4'
         exclude module: 'support-v13'
@@ -144,5 +122,5 @@ dependencies {
 }
 
 configurations.all {
-    resolutionStrategy.force "com.android.support:support-annotations:${versions.support}"
+    resolutionStrategy.force "com.android.support:support-annotations:23.2.0"
 }

@@ -27,7 +27,6 @@ import rx_gcm.Message;
 
 
 @Data public class GcmNotification<T> {
-    private final String key, group; //in order to retrieve cache
     private final T data;
     private final String title, body;
 

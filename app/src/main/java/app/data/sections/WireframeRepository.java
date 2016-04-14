@@ -31,11 +31,23 @@ public class WireframeRepository extends Repository {
     }
 
     public <T> Observable<T> getWireframeCurrentObject() {
-        return rxProviders.getWireframeCurrentObject(Observable.just(null), new EvictProvider(false));
+        return rxProviders
+                .<T>getWireframeCurrentObject(Observable.just(null), new EvictProvider(false))
+                .doOnError(throwable -> {
+                    throw new WireframeException();
+                });
     }
 
     public Observable<Void> setWireframeCurrentObject(Object object) {
         return rxProviders.getWireframeCurrentObject(Observable.just(object), new EvictProvider(true))
                 .map(_I -> null);
+    }
+
+    public class WireframeException extends RuntimeException {
+
+        public WireframeException() {
+            super("There is not cached object in the wireframe");
+        }
+
     }
 }

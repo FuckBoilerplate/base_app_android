@@ -21,6 +21,9 @@ import android.support.annotation.StringRes;
 
 import com.trello.rxlifecycle.RxLifecycle;
 
+import org.base_app_android.BuildConfig;
+import org.base_app_android.R;
+
 import app.domain.foundation.gcm.GcmNotification;
 import app.presentation.foundation.views.BaseActivity;
 import app.presentation.foundation.views.BaseFragment;
@@ -70,7 +73,10 @@ public abstract class Presenter<V extends BaseView> {
 
     protected <T> Observable.Transformer<T, T> safelyReportSnackbar() {
         return observable -> observable.compose(safely())
-                .doOnError(throwable -> view.showSnackBar(parseException(throwable)))
+                .doOnError(throwable -> {
+                    if (BuildConfig.DEBUG) view.showToast(parseException(throwable));
+                    else view.showSnackBar(parseException(throwable));
+                })
                 .onErrorResumeNext(throwable -> Observable.empty());
     }
 
@@ -80,6 +86,8 @@ public abstract class Presenter<V extends BaseView> {
     }
 
     public Observable<String> parseException(Throwable throwable) {
+        if (!BuildConfig.DEBUG) return Observable.just(getString(R.string.errors_happen));
+
         String message = throwable.getMessage();
 
         if(throwable.getCause() != null) message += System.getProperty("line.separator") + throwable.getCause().getMessage();

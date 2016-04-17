@@ -37,9 +37,8 @@ public class GcmReceiverBackground implements GcmReceiverUIBackground {
         oMessage.subscribe(message -> {
             BaseApp baseApp = (BaseApp) message.application();
 
-            GcmNotification.getMessageFromGcmNotification(message).subscribe(gcmNotification -> {
-                showNotification(message, gcmNotification.getTitle(), gcmNotification.getBody(), baseApp);
-            });
+            GcmNotification gcmNotification = GcmNotification.getMessageFromGcmNotification(message);
+            showNotification(message, gcmNotification.getTitle(), gcmNotification.getBody(), baseApp);
         });
     }
 

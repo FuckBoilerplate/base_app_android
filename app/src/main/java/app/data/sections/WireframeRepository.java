@@ -18,16 +18,17 @@ package app.data.sections;
 
 import javax.inject.Inject;
 
+import app.data.foundation.Repository;
+import app.data.foundation.UIUtils;
 import app.data.foundation.cache.RxProviders;
 import app.data.foundation.net.RestApi;
-import app.data.foundation.Repository;
 import io.rx_cache.EvictProvider;
 import rx.Observable;
 
 public class WireframeRepository extends Repository {
 
-    @Inject public WireframeRepository(RestApi restApi, RxProviders rxProviders) {
-        super(restApi, rxProviders);
+    @Inject public WireframeRepository(RestApi restApi, RxProviders rxProviders, UIUtils uiUtils) {
+        super(restApi, rxProviders, uiUtils);
     }
 
     public <T> Observable<T> getWireframeCurrentObject() {

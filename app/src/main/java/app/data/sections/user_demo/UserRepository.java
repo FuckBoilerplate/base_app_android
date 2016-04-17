@@ -16,25 +16,42 @@
 
 package app.data.sections.user_demo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import app.data.foundation.Repository;
+import app.data.foundation.UIUtils;
 import app.data.foundation.cache.RxProviders;
 import app.data.foundation.net.RestApi;
-import app.data.foundation.Repository;
 import app.domain.user_demo.User;
 import io.rx_cache.DynamicKey;
 import io.rx_cache.EvictProvider;
 import rx.Observable;
 
 public class UserRepository extends Repository {
-    public static final int USERS_PER_PAGE = 25, MAX_USERS_TO_LOAD = 300;
+    public static final int USERS_PER_PAGE = 50, MAX_USERS_TO_LOAD = 300;
 
-    @Inject public UserRepository(RestApi restApi, RxProviders rxProviders) {
-        super(restApi, rxProviders);
+    @Inject public UserRepository(RestApi restApi, RxProviders rxProviders, UIUtils uiUtils) {
+        super(restApi, rxProviders, uiUtils);
     }
+
+    public Observable<List<User>> getUsers(Integer lastIdQueried, final boolean refresh) {
+        lastIdQueried = lastIdQueried == null ? FIRST_ID_QUERIED : lastIdQueried;
+
+        Observable<List<User>> loader = restApi.getUsers(lastIdQueried, USERS_PER_PAGE).map(response -> {
+            handleError(response);
+            return response.body();
+        });
+
+
+        if (lastIdQueried == FIRST_ID_QUERIED) {
+            loader = rxProviders.getUsers(loader, new DynamicKey(lastIdQueried), new EvictProvider(refresh));
+        }
+
+        return loader;
+    }
+
 
     public Observable<User> searchByUserName(final String  username) {
         return restApi.getUserByName(username).map(response -> {
@@ -42,24 +59,5 @@ public class UserRepository extends Repository {
             final User user = response.body();
             return user;
         });
-    }
-
-    public Observable<List<User>> askForUsers(int lastIdQueried, boolean refresh) {
-        if (lastIdQueried > MAX_USERS_TO_LOAD) return Observable.just(new ArrayList<>());
-
-        Observable<List<User>> oUsers = restApi.getUsers(lastIdQueried, USERS_PER_PAGE).map(response -> {
-            handleError(response);
-            return response.body();
-        });
-
-        return rxProviders.getUsers(oUsers, new DynamicKey(lastIdQueried), new EvictProvider(refresh)).
-                map(reply -> {
-                    List<User> users = reply.getData();
-                    for (User user : users) {
-                        String login = user.getLogin() + System.lineSeparator() + reply.getSource().name();
-                        user.setLogin(login);
-                    }
-                    return users;
-                });
     }
 }

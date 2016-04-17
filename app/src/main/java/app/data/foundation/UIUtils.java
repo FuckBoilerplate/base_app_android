@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package app.data.foundation.cache;
+package app.data.foundation;
 
-import java.util.List;
+import android.support.annotation.StringRes;
 
-import app.domain.user_demo.User;
-import io.rx_cache.DynamicKey;
-import io.rx_cache.EvictProvider;
-import rx.Observable;
+import java.io.File;
 
 /**
- * Providers for RxCache
+ * Created by victor on 15/04/16.
  */
-public interface RxProviders {
-    <T> Observable<T> getWireframeCurrentObject(Observable<T> oObject, EvictProvider evictProvider);
-    Observable<List<User>> getUsers(Observable<List<User>> oUsers, DynamicKey dynamicKey, EvictProvider evictProvider);
+public interface UIUtils {
+    String getLang();
+    String getString(@StringRes int idResource);
+    File getFilesDir();
 }
-

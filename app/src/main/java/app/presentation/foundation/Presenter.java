@@ -117,7 +117,7 @@ public abstract class Presenter<V extends BaseView> {
 
     public void onMismatchTargetNotification(Observable<Message> oMessage) {
         Observable<String> oGcmNotification = oMessage
-                .flatMap(GcmNotification::getMessageFromGcmNotification)
+                .map(GcmNotification::getMessageFromGcmNotification)
                 .map(gcmNotification -> gcmNotification.getTitle() + System.lineSeparator() + gcmNotification.getBody());
 
         view.showToast(oGcmNotification);

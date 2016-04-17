@@ -22,7 +22,6 @@ import com.google.gson.GsonBuilder;
 import java.lang.reflect.Type;
 
 import lombok.Data;
-import rx.Observable;
 import rx_gcm.Message;
 
 
@@ -30,15 +29,16 @@ import rx_gcm.Message;
     private final T data;
     private final String title, body;
 
-    public static <T> Observable<GcmNotification<T>> getMessageFromGcmNotification(Message message) {
+    public static <T> GcmNotification<T> getMessageFromGcmNotification(Message message) {
         String payload = message.payload().toString();
+
         Type type = new TypeToken<GcmNotification<T>>(){}.getType();
         GcmNotification<T> gcmNotification = new GsonBuilder().create().fromJson(payload, type);
-        return Observable.just(gcmNotification);
+
+        return gcmNotification;
     }
 
-    public static <T> Observable<T> getDataFromGcmNotification(Message message) {
-        return getMessageFromGcmNotification(message)
-                .map(gcmNotification -> (T) gcmNotification.getData());
+    public static <T> T getDataFromGcmNotification(Message message) {
+        return (T) getMessageFromGcmNotification(message).getData();
     }
 }

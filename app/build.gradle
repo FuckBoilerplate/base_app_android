@@ -132,7 +132,8 @@ task('freshStart') << {
     Helper.removeDir(data+"sections/user_demo")
 
     Helper.moveFileDeleting(startFresh+"RestApi", data+"foundation/net/", "RestApi.java")
-    Helper.moveFileDeleting(startFresh+"RestApiMock", data+"foundation/net/", "RestApiMock.java")
+    Helper.moveFileDeleting(startFresh+"RestApiMock", data+"foundation/net/mock/", "RestApiMock.java")
+    Helper.moveFileDeleting(startFresh+"Seeder", data+"foundation/net/mock/", "Seeder.java")
     Helper.moveFileDeleting(startFresh+"RxProviders", data+"foundation/cache/", "RxProviders.java")
 
     String domain = "app/src/main/java/app/domain/"

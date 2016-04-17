@@ -29,12 +29,15 @@ import rx.Observable;
 
 
 public abstract class Repository {
+    public static final int PER_PAGE = 50, FIRST_ID_QUERIED = 0;
     protected final RestApi restApi;
     protected final RxProviders rxProviders;
+    protected final UIUtils uiUtils;
 
-    public Repository(RestApi restApi, RxProviders rxProviders) {
+    public Repository(RestApi restApi, RxProviders rxProviders, UIUtils uiUtils) {
         this.restApi = restApi;
         this.rxProviders = rxProviders;
+        this.uiUtils = uiUtils;
     }
 
     protected void handleError(Response response) {

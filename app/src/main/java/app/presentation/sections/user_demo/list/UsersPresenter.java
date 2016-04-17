@@ -28,13 +28,13 @@ public class UsersPresenter extends Presenter<UsersFragment> {
     }
 
     public Observable<List<User>> nextPage(User user) {
-        int id = 0;
+        Integer id = null;
         if (user != null) id = user.getId();
-        return repository.askForUsers(id, false).compose(safelyReportSnackbar());
+        return repository.getUsers(id, false).compose(safelyReportSnackbar());
     }
 
     public Observable<List<User>> refreshList() {
-        return repository.askForUsers(0, true).compose(safelyReportSnackbar());
+        return repository.getUsers(0, true).compose(safelyReportSnackbar());
     }
 
 }

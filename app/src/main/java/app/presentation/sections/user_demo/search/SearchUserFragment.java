@@ -40,17 +40,15 @@ public class SearchUserFragment extends BaseFragment<SearchUserPresenter> implem
     }
 
     public void showUser(Observable<User> oUser) {
-        oUser.subscribe(user_view_group::bind);
+        oUser.subscribe((user) -> {
+                    user_view_group.setVisibility(View.VISIBLE);
+                    user_view_group.bind(user);
+        });
     }
 
     @Override public void showLoading() {
         super.showLoading();
         user_view_group.setVisibility(View.GONE);
-    }
-
-    @Override public void hideLoading() {
-        super.hideLoading();
-        user_view_group.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.bt_find_user)

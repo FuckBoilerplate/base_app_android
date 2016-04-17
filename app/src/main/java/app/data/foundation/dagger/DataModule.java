@@ -16,11 +16,14 @@
 
 package app.data.foundation.dagger;
 
+import java.io.File;
+
 import javax.inject.Singleton;
 
+import app.data.foundation.UIUtils;
 import app.data.foundation.cache.RxProviders;
 import app.data.foundation.net.RestApi;
-import app.data.foundation.net.RestApiMock;
+import app.data.foundation.net.mock.RestApiMock;
 import app.presentation.foundation.BaseApp;
 import dagger.Module;
 import dagger.Provides;
@@ -36,7 +39,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class DataModule {
 
     @Singleton @Provides public RestApi provideRestApi() {
-        boolean mockMode = false; //BuildConfig.DEBUG;
+        boolean mockMode = false;//BuildConfig.DEBUG;
         if (mockMode) return new RestApiMock();
 
         return new Retrofit.Builder()
@@ -46,9 +49,25 @@ public class DataModule {
                 .build().create(RestApi.class);
     }
 
-    @Singleton @Provides RxProviders provideRxProviders(BaseApp baseApp) {
+    @Singleton @Provides public RxProviders provideRxProviders(UIUtils uiUtils) {
         return new RxCache.Builder()
-                .persistence(baseApp.getFilesDir())
+                .persistence(uiUtils.getFilesDir())
                 .using(RxProviders.class);
+    }
+
+    @Singleton @Provides UIUtils provideUiUtils(BaseApp baseApp) {
+        return new UIUtils() {
+            @Override public String getLang() {
+                return baseApp.getResources().getConfiguration().locale.getLanguage();
+            }
+
+            @Override public String getString(int idResource) {
+                return baseApp.getString(idResource);
+            }
+
+            @Override public File getFilesDir() {
+                return baseApp.getFilesDir();
+            }
+        };
     }
 }

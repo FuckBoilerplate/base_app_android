@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import app.data.foundation.net.RestApi;
+import app.domain.user_demo.User;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -39,6 +40,22 @@ public class RestApiMock implements RestApi {
     public RestApiMock() {
         this.seeder = new Seeder();
         validator = new Validator();
+    }
+
+    @Override public Observable<Response<User>> getUserByName(@Path("username") String username) {
+        return Observable.defer(() -> {
+            Object[] values = {username};
+            if (validator.notNullEmpty(values)) return responseSuccess(seeder.getUserByName(username));
+            else return responseError();
+        });
+    }
+
+    @Override public Observable<Response<List<User>>> getUsers(@Query("since") int lastIdQueried, @Query("per_page") int perPage) {
+        return Observable.defer(() -> {
+            Object[] values = {lastIdQueried, perPage};
+            if (validator.notNullEmpty(values)) return responseSuccess(seeder.getUsers());
+            else return responseError();
+        });
     }
 
     private final static int SECONDS_DELAY = 2;

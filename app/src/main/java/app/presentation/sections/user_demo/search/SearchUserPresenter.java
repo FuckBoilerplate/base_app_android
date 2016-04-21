@@ -22,20 +22,17 @@ public class SearchUserPresenter extends Presenter<SearchUserFragment> {
         this.userRepository = userRepository;
     }
 
-    @Override public void onCreatedView() {
-        super.onCreatedView();
-
+    Observable<String> helloFromBundle() {
         Bundle bundle = view.getArguments();
         String helloFromBundle = bundle != null ? bundle.getString(HELLO_FROM_BUNDLE_WIREFRAME_KEY, "") : "";
-        if (!helloFromBundle.isEmpty()) view.showSnackBar(Observable.just(helloFromBundle));
+        if (!helloFromBundle.isEmpty()) return Observable.just(helloFromBundle).compose(safely());
+        return Observable.<String>empty().compose(safely());
     }
 
-    public void getUserByUserName(String name) {
-        Observable<User> oUser = userRepository.searchByUserName(name)
+    Observable<User> getUserByUserName(String name) {
+        return userRepository.searchByUserName(name)
                 .compose(safelyReportSnackbar())
                 .compose(applyLoading());
-
-        view.showUser(oUser);
     }
 
 }

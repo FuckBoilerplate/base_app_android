@@ -27,8 +27,7 @@ public class LaunchPresenter extends Presenter<LaunchActivity> {
         super(wireframe);
     }
 
-    @Override public void onCreatedView() {
-        super.onCreatedView();
+    void goToDashboard() {
         wireframe.dashboard();
     }
 

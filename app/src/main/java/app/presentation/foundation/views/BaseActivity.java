@@ -68,8 +68,6 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
         presenter.attachView(this);
         initViews();
         configureFragment();
-
-        presenter.onCreatedView();
     }
 
     protected void initViews() {}
@@ -214,21 +212,6 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
 
     @Override public void showSnackBar(Observable<String> oTitle) {
         oTitle.subscribe(title -> Snackbar.make(findViewById(android.R.id.content), title, Snackbar.LENGTH_LONG).show());
-    }
-
-    @Override protected void onResume() {
-        super.onResume();
-        presenter.onResume();
-    }
-
-    @Override protected void onPause() {
-        super.onPause();
-        presenter.onPause();
-    }
-
-    @Override protected void onDestroy() {
-        super.onDestroy();
-        presenter.onDestroy();
     }
 
     /***

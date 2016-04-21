@@ -35,12 +35,7 @@ public class DashboardPresenter extends Presenter<DashBoardActivity> {
         super(wireframe);
     }
 
-    @Override public void onCreatedView() {
-        super.onCreatedView();
-        view.showItemsMenu(itemsMenu().doOnSubscribe(() -> view.showUsers()));
-    }
-
-    private Observable<List<ItemMenu>> itemsMenu() {
+    Observable<List<ItemMenu>> itemsMenu() {
         List<ItemMenu> itemMenus = new ArrayList<>();
 
         itemMenus.add(new ItemMenu(ID_USERS, view.getString(R.string.users), R.drawable.ic_users));
@@ -50,7 +45,11 @@ public class DashboardPresenter extends Presenter<DashBoardActivity> {
         return Observable.just(itemMenus).compose(safely());
     }
 
-    public void setSelectedItemMenu(ItemMenu itemMenu) {
+    void setDefaultItemMenu() {
+        view.showUsers();
+    }
+
+    void setSelectedItemMenu(ItemMenu itemMenu) {
         if (itemMenu.getId() == ID_USERS)
             view.showUsers();
         else if (itemMenu.getId() == ID_USER)

@@ -14,14 +14,10 @@ public class UserPresenter extends Presenter<UserFragment> {
         super(wireframe);
     }
 
-    @Override public void onCreatedView() {
-        super.onCreatedView();
-
-        Observable<User> currentUser = wireframe.<User>getWireframeCurrentObject()
+    Observable<User> getCurrentUser() {
+        return wireframe.<User>getWireframeCurrentObject()
                 .compose(safelyReportSnackbar())
                 .compose(applyLoading());
-
-        view.showUser(currentUser);
     }
 
     void goToSearchScreen() {

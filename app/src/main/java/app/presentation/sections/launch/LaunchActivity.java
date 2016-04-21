@@ -24,4 +24,8 @@ public class LaunchActivity extends BaseActivity<LaunchPresenter> {
         getApplicationComponent().inject(this);
     }
 
+    @Override protected void initViews() {
+        super.initViews();
+        presenter.goToDashboard();
+    }
 }

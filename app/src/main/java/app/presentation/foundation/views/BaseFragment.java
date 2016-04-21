@@ -56,23 +56,11 @@ public abstract class BaseFragment<P extends Presenter> extends RxFragment imple
 
         presenter.attachView(this);
         initViews();
-        presenter.onCreatedView();
-    }
-
-    @Override public void onPause() {
-        super.onPause();
-        presenter.onPause();
     }
 
     @Override public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        presenter.onDestroy();
-    }
-
-    @Override public void onResume() {
-        super.onResume();
-        presenter.onResume();
     }
 
     protected abstract void injectDagger();

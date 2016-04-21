@@ -18,13 +18,11 @@ package app.presentation.sections.user_demo.detail;
 
 import org.base_app_android.R;
 
-import butterknife.Bind;
-import butterknife.OnClick;
-import app.domain.user_demo.User;
 import app.presentation.foundation.views.BaseFragment;
 import app.presentation.foundation.views.LayoutResFragment;
 import app.presentation.sections.user_demo.UserViewGroup;
-import rx.Observable;
+import butterknife.Bind;
+import butterknife.OnClick;
 
 @LayoutResFragment(R.layout.user_fragment)
 public class UserFragment extends BaseFragment<UserPresenter> {
@@ -34,8 +32,9 @@ public class UserFragment extends BaseFragment<UserPresenter> {
         getApplicationComponent().inject(this);
     }
 
-    public void showUser(Observable<User> oUser) {
-        oUser.subscribe(user -> user_view_group.bind(user));
+    @Override protected void initViews() {
+        super.initViews();
+        presenter.getCurrentUser().subscribe(user -> user_view_group.bind(user));
     }
 
     @OnClick(R.id.bt_go_to_search_user)

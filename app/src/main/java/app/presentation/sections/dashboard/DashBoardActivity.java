@@ -16,7 +16,6 @@
 
 package app.presentation.sections.dashboard;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -29,24 +28,21 @@ import android.view.ViewGroup;
 
 import org.base_app_android.R;
 
-import java.util.List;
-
-import butterknife.Bind;
-import butterknife.BindString;
 import app.domain.dashboard.ItemMenu;
-import library.recycler_view.OkRecyclerViewAdapter;
 import app.presentation.foundation.views.BaseActivity;
 import app.presentation.foundation.views.LayoutResActivity;
 import app.presentation.sections.user_demo.detail.UserFragment;
 import app.presentation.sections.user_demo.list.UsersFragment;
 import app.presentation.sections.user_demo.search.SearchUserFragment;
-import rx.Observable;
+import butterknife.Bind;
+import butterknife.BindString;
+import library.recycler_view.OkRecyclerViewAdapter;
 
 @LayoutResActivity(R.layout.dashboard_activity)
 public class DashBoardActivity extends BaseActivity<DashboardPresenter>  {
     @Bind(R.id.rv_menu_items) protected RecyclerView rv_menu_items;
     @Bind(R.id.drawer_layout) protected DrawerLayout drawer_layout;
-    private ItemMenuDashboardAdapter adapter;
+    private OkRecyclerViewAdapter<ItemMenu, ItemMenuViewGroup> adapter;
     private ActionBarDrawerToggle drawerToggle;
 
     @Override protected void injectDagger() {
@@ -57,6 +53,11 @@ public class DashBoardActivity extends BaseActivity<DashboardPresenter>  {
         super.initViews();
         setUpDrawerToggle();
         setUpRecyclerView();
+
+        presenter.itemsMenu().subscribe(itemMenus -> {
+            adapter.setAll(itemMenus);
+            presenter.setDefaultItemMenu();
+        });
     }
 
     @Override protected void onDestroy() {
@@ -85,7 +86,11 @@ public class DashBoardActivity extends BaseActivity<DashboardPresenter>  {
         rv_menu_items.setHasFixedSize(true);
         rv_menu_items.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new ItemMenuDashboardAdapter(this);
+        adapter = new OkRecyclerViewAdapter<ItemMenu, ItemMenuViewGroup>() {
+            @Override protected ItemMenuViewGroup onCreateItemView(ViewGroup viewGroup, int i) {
+                return new ItemMenuViewGroup(DashBoardActivity.this);
+            }
+        };
 
         adapter.setOnItemClickListener((itemMenu, itemMenuViewGroup) -> {
             drawer_layout.closeDrawer(rv_menu_items);
@@ -93,10 +98,6 @@ public class DashBoardActivity extends BaseActivity<DashboardPresenter>  {
         });
 
         rv_menu_items.setAdapter(adapter);
-    }
-
-    public void showItemsMenu(Observable<List<ItemMenu>> oItemsMenu) {
-        oItemsMenu.subscribe(itemMenus -> adapter.setAll(itemMenus));
     }
 
     @BindString(R.string.users) protected String users;
@@ -131,17 +132,5 @@ public class DashBoardActivity extends BaseActivity<DashboardPresenter>  {
         if (drawerToggle.onOptionsItemSelected(item)) return true;
         else if (item.getItemId() == android.R.id.home) onBackPressed();
         return super.onOptionsItemSelected(item);
-    }
-
-    static private class ItemMenuDashboardAdapter extends OkRecyclerViewAdapter<ItemMenu, ItemMenuViewGroup> {
-        private Context context;
-
-        public ItemMenuDashboardAdapter(Context context) {
-            this.context = context;
-        }
-
-        @Override protected ItemMenuViewGroup onCreateItemView(ViewGroup parent, int viewType) {
-            return new ItemMenuViewGroup(context);
-        }
     }
 }

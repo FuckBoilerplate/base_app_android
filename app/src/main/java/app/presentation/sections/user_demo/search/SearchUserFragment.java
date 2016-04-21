@@ -21,13 +21,12 @@ import android.widget.EditText;
 
 import org.base_app_android.R;
 
-import butterknife.Bind;
-import butterknife.OnClick;
-import app.domain.user_demo.User;
 import app.presentation.foundation.views.BaseActivity;
 import app.presentation.foundation.views.BaseFragment;
 import app.presentation.foundation.views.LayoutResFragment;
 import app.presentation.sections.user_demo.UserViewGroup;
+import butterknife.Bind;
+import butterknife.OnClick;
 import rx.Observable;
 
 @LayoutResFragment(R.layout.user_search_fragment)
@@ -39,11 +38,9 @@ public class SearchUserFragment extends BaseFragment<SearchUserPresenter> implem
         getApplicationComponent().inject(this);
     }
 
-    public void showUser(Observable<User> oUser) {
-        oUser.subscribe((user) -> {
-                    user_view_group.setVisibility(View.VISIBLE);
-                    user_view_group.bind(user);
-        });
+    @Override protected void initViews() {
+        super.initViews();
+        showToast(presenter.helloFromBundle());
     }
 
     @Override public void showLoading() {
@@ -53,7 +50,12 @@ public class SearchUserFragment extends BaseFragment<SearchUserPresenter> implem
 
     @OnClick(R.id.bt_find_user)
     protected void bt_find_user() {
-        presenter.getUserByUserName(et_name.getText().toString());
+        String userName = et_name.getText().toString();
+
+        presenter.getUserByUserName(userName).subscribe(user -> {
+                user_view_group.setVisibility(View.VISIBLE);
+                user_view_group.bind(user);
+        });
     }
 
     @Override public boolean onBackPressed() {

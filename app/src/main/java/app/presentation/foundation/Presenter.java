@@ -47,14 +47,6 @@ public abstract class Presenter<V extends BaseView> {
         this.view = view;
     }
 
-    public void onCreatedView() {}
-
-    public void onResume() {}
-
-    public void onPause() {}
-
-    public void onDestroy() {}
-
     public void back() {
         wireframe.popCurrentScreen();
     }
@@ -118,7 +110,7 @@ public abstract class Presenter<V extends BaseView> {
     public void onMismatchTargetNotification(Observable<Message> oMessage) {
         Observable<String> oGcmNotification = oMessage
                 .map(GcmNotification::getMessageFromGcmNotification)
-                .map(gcmNotification -> gcmNotification.getTitle() + System.lineSeparator() + gcmNotification.getBody());
+                .map(gcmNotification -> gcmNotification.getTitle() + System.getProperty("line.separator") + gcmNotification.getBody());
 
         view.showToast(oGcmNotification);
     }

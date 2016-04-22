@@ -16,13 +16,15 @@
 
 package app.presentation.foundation;
 
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-@Singleton public class SyncScreens {
+@Singleton public final class SyncScreens {
     private final List<String> pendingScreens;
 
     @Inject public SyncScreens() {
@@ -30,15 +32,17 @@ import javax.inject.Singleton;
     }
 
     public void addScreen(String screen) {
-        pendingScreens.add(screen);
+        if (!pendingScreens.contains(screen)) pendingScreens.add(screen);
     }
 
-    public boolean needToSync(String candidate) {
+    public boolean needToSync(@Nullable String candidate) {
         boolean needToSync = false;
+
+        if (candidate == null) return needToSync;
 
         int index = 0;
 
-        for (String screen: pendingScreens) {
+        for (String screen : pendingScreens) {
             if (candidate.equals(screen)) {
                 needToSync = true;
                 break;

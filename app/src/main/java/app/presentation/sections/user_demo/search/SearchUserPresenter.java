@@ -6,14 +6,14 @@ import javax.inject.Inject;
 
 import app.data.sections.user_demo.UserRepository;
 import app.domain.user_demo.User;
-import app.presentation.foundation.Presenter;
+import app.presentation.foundation.PresenterFragment;
 import app.presentation.sections.Wireframe;
 import rx.Observable;
 
 /**
  * Created by victor on 08/04/16.
  */
-public class SearchUserPresenter extends Presenter<SearchUserFragment> {
+public class SearchUserPresenter extends PresenterFragment<SearchUserFragment> {
     private final UserRepository userRepository;
     public static final String HELLO_FROM_BUNDLE_WIREFRAME_KEY = "hello_from_bundle_key";
 

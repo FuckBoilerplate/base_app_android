@@ -6,14 +6,14 @@ import javax.inject.Inject;
 
 import app.data.sections.user_demo.UserRepository;
 import app.domain.user_demo.User;
-import app.presentation.foundation.Presenter;
+import app.presentation.foundation.PresenterFragment;
 import app.presentation.sections.Wireframe;
 import rx.Observable;
 
 /**
  * Created by victor on 08/04/16.
  */
-public class UsersPresenter extends Presenter<UsersFragment> {
+public class UsersPresenter extends PresenterFragment<UsersFragment> {
     private final UserRepository repository;
 
     @Inject public UsersPresenter(Wireframe wireframe, UserRepository repository) {

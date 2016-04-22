@@ -28,6 +28,8 @@ import android.view.ViewGroup;
 
 import org.base_app_android.R;
 
+import java.util.Arrays;
+
 import app.domain.dashboard.ItemMenu;
 import app.presentation.foundation.views.BaseActivity;
 import app.presentation.foundation.views.LayoutResActivity;
@@ -39,7 +41,9 @@ import butterknife.BindString;
 import library.recycler_view.OkRecyclerViewAdapter;
 
 @LayoutResActivity(R.layout.dashboard_activity)
-public class DashBoardActivity extends BaseActivity<DashboardPresenter>  {
+public class DashBoardActivity extends BaseActivity {
+    private final static int ID_USERS = 1, ID_USER = 2, ID_SEARCH = 3;
+
     @Bind(R.id.rv_menu_items) protected RecyclerView rv_menu_items;
     @Bind(R.id.drawer_layout) protected DrawerLayout drawer_layout;
     private OkRecyclerViewAdapter<ItemMenu, ItemMenuViewGroup> adapter;
@@ -53,11 +57,6 @@ public class DashBoardActivity extends BaseActivity<DashboardPresenter>  {
         super.initViews();
         setUpDrawerToggle();
         setUpRecyclerView();
-
-        presenter.itemsMenu().subscribe(itemMenus -> {
-            adapter.setAll(itemMenus);
-            presenter.setDefaultItemMenu();
-        });
     }
 
     @Override protected void onDestroy() {
@@ -94,10 +93,21 @@ public class DashBoardActivity extends BaseActivity<DashboardPresenter>  {
 
         adapter.setOnItemClickListener((itemMenu, itemMenuViewGroup) -> {
             drawer_layout.closeDrawer(rv_menu_items);
-            presenter.setSelectedItemMenu(itemMenu);
+
+            if (itemMenu.getId() == ID_USERS) showUsers();
+            else if (itemMenu.getId() == ID_USER) showUser();
+            else showUserSearch();
         });
 
+        adapter.setAll(Arrays.asList(
+                new ItemMenu(ID_USERS, getString(R.string.users), R.drawable.ic_users),
+                new ItemMenu(ID_USER, getString(R.string.user), R.drawable.ic_user),
+                new ItemMenu(ID_SEARCH, getString(R.string.find_user), R.drawable.ic_search)
+        ));
+
         rv_menu_items.setAdapter(adapter);
+
+        showUsers();
     }
 
     @BindString(R.string.users) protected String users;

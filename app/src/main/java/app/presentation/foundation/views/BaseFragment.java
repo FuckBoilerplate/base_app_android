@@ -24,19 +24,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.trello.rxlifecycle.FragmentEvent;
 import com.trello.rxlifecycle.components.support.RxFragment;
+
+import org.base_app_android.R;
 
 import javax.inject.Inject;
 
-import app.presentation.foundation.Presenter;
-import butterknife.ButterKnife;
+import app.domain.foundation.gcm.GcmNotification;
+import app.presentation.foundation.PresenterFragment;
+import app.presentation.foundation.SyncScreens;
 import app.presentation.foundation.dagger.PresentationComponent;
+import butterknife.ButterKnife;
 import rx.Observable;
 import rx_gcm.GcmReceiverUIForeground;
 import rx_gcm.Message;
 
-public abstract class BaseFragment<P extends Presenter> extends RxFragment implements BaseView, GcmReceiverUIForeground {
+public abstract class BaseFragment<P extends PresenterFragment> extends RxFragment implements BaseViewFragment, GcmReceiverUIForeground {
     @Inject protected P presenter;
+    @Inject protected SyncScreens syncScreens;
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(layoutRes(), container, false);
@@ -58,6 +64,13 @@ public abstract class BaseFragment<P extends Presenter> extends RxFragment imple
         initViews();
     }
 
+    @Override public void onResume() {
+        super.onResume();
+
+        boolean needToSync = syncScreens.needToSync(target());
+        if (needToSync) onSyncScreen();
+    }
+
     @Override public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
@@ -65,6 +78,13 @@ public abstract class BaseFragment<P extends Presenter> extends RxFragment imple
 
     protected abstract void injectDagger();
     protected void initViews() {}
+
+    /**
+     * Override this method to add functionality on sync screen call
+     */
+    protected void onSyncScreen() {
+        throw new RuntimeException(getString(R.string.sync_screen_error, getClass()));
+    }
 
     protected PresentationComponent getApplicationComponent() {
         return ((BaseActivity)getActivity()).getApplicationComponent();
@@ -79,35 +99,41 @@ public abstract class BaseFragment<P extends Presenter> extends RxFragment imple
     }
 
     @Override public void showToast(Observable<String> oTitle) {
-        if (getActivity() instanceof BaseActivity)
-            ((BaseActivity)getActivity()).showToast(oTitle);
+        ((BaseActivity)getActivity()).showToast(oTitle);
     }
 
     @Override public void showSnackBar(Observable<String> oTitle) {
-        if (getActivity() instanceof BaseActivity)
-            ((BaseActivity)getActivity()).showSnackBar(oTitle);
+        ((BaseActivity)getActivity()).showSnackBar(oTitle);
     }
 
     @Override public void showLoading() {
-        if (getActivity() instanceof BaseActivity)
-            ((BaseActivity)getActivity()).showLoading();
+        ((BaseActivity)getActivity()).showLoading();
     }
 
     @Override public void hideLoading() {
-        if (getActivity() instanceof BaseActivity)
-            ((BaseActivity)getActivity()).hideLoading();
+        ((BaseActivity)getActivity()).hideLoading();
     }
 
-    @Override public void onTargetNotification(Observable<Message> ignore) {
-        presenter.onTargetNotification(ignore);
+    @Override public Observable<FragmentEvent> lifeCycle() {
+        return lifecycle();
     }
+
+    @Override public void onTargetNotification(Observable<Message> ignore) {}
 
     @Override public void onMismatchTargetNotification(Observable<Message> oMessage) {
-        presenter.onMismatchTargetNotification(oMessage);
+        Observable<String> oGcmNotification = oMessage
+                .doOnNext(message -> syncScreens.addScreen(message.target()))
+                .map(GcmNotification::getMessageFromGcmNotification)
+                .map(gcmMessageNotification -> gcmMessageNotification.getTitle() + "\n" + gcmMessageNotification.getBody());
+        showToast(oGcmNotification);
     }
 
+    /**
+     * Override this method if the fragment requires to be notified, whether by a gcm notification, or due to some other internal event
+     * handled by screensSync instance.
+     */
     @Override public String target() {
-        return presenter.target();
+        return "";
     }
 
     protected void setTittle(String tittle){

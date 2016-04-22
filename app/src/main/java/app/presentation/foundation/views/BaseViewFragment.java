@@ -16,11 +16,17 @@
 
 package app.presentation.foundation.views;
 
+import android.app.Activity;
+
+import com.trello.rxlifecycle.FragmentEvent;
+
 import rx.Observable;
 
-public interface BaseView {
+public interface BaseViewFragment {
     void showToast(Observable<String> oTitle);
     void showSnackBar(Observable<String> oTitle);
     void showLoading();
     void hideLoading();
+    Observable<FragmentEvent> lifeCycle();
+    Activity getActivity();
 }

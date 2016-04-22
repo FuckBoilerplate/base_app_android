@@ -36,18 +36,13 @@ import org.base_app_android.R;
 
 import java.io.Serializable;
 
-import javax.inject.Inject;
-
 import app.presentation.foundation.BaseApp;
-import app.presentation.foundation.Presenter;
+import app.presentation.foundation.dagger.PresentationComponent;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import app.presentation.foundation.dagger.PresentationComponent;
 import rx.Observable;
 
-public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActivity implements BaseView {
-    @Inject protected P presenter;
-
+public abstract class BaseActivity extends RxAppCompatActivity {
     @Nullable @Bind(R.id.app_bar) protected AppBarLayout app_bar;
     @Nullable @Bind(R.id.toolbar) protected Toolbar toolbar;
 
@@ -65,7 +60,6 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
 
         configureToolbar(toolbar, app_bar);
 
-        presenter.attachView(this);
         initViews();
         configureFragment();
     }
@@ -206,11 +200,11 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
         if (listener.onBackPressed()) super.onBackPressed();
     }
 
-    @Override public void showToast(Observable<String> oTitle) {
+    public void showToast(Observable<String> oTitle) {
         oTitle.subscribe(title -> Toast.makeText(this, title, Toast.LENGTH_LONG).show());
     }
 
-    @Override public void showSnackBar(Observable<String> oTitle) {
+    public void showSnackBar(Observable<String> oTitle) {
         oTitle.subscribe(title -> Snackbar.make(findViewById(android.R.id.content), title, Snackbar.LENGTH_LONG).show());
     }
 

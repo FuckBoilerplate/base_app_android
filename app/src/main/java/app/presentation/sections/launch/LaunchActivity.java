@@ -16,16 +16,19 @@
 
 package app.presentation.sections.launch;
 
+import javax.inject.Inject;
+
 import app.presentation.foundation.views.BaseActivity;
+import app.presentation.sections.Wireframe;
 
-public class LaunchActivity extends BaseActivity<LaunchPresenter> {
-
+public class LaunchActivity extends BaseActivity {
+    @Inject Wireframe wireframe;
     @Override protected void injectDagger() {
         getApplicationComponent().inject(this);
     }
 
     @Override protected void initViews() {
         super.initViews();
-        presenter.goToDashboard();
+        wireframe.dashboard();
     }
 }

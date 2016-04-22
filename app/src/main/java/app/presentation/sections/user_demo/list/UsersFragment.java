@@ -64,4 +64,7 @@ public class UsersFragment extends BaseFragment<UsersPresenter>  {
         recyclerViewPaginated.setResetPager(() -> presenter.refreshList());
     }
 
+    @Override protected void onSyncScreen() {
+        super.onSyncScreen();
+    }
 }

@@ -16,7 +16,6 @@
 
 package app.presentation.foundation;
 
-import android.content.Context;
 import android.support.annotation.StringRes;
 
 import com.trello.rxlifecycle.RxLifecycle;
@@ -24,22 +23,18 @@ import com.trello.rxlifecycle.RxLifecycle;
 import org.base_app_android.BuildConfig;
 import org.base_app_android.R;
 
-import app.domain.foundation.gcm.GcmNotification;
-import app.presentation.foundation.views.BaseActivity;
-import app.presentation.foundation.views.BaseFragment;
-import app.presentation.foundation.views.BaseView;
+import app.presentation.foundation.views.BaseViewFragment;
 import app.presentation.sections.Wireframe;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.exceptions.CompositeException;
 import rx.schedulers.Schedulers;
-import rx_gcm.Message;
 
-public abstract class Presenter<V extends BaseView> {
+public abstract class PresenterFragment<V extends BaseViewFragment> {
     protected V view;
     protected final Wireframe wireframe;
 
-    protected Presenter(Wireframe wireframe) {
+    protected PresenterFragment(Wireframe wireframe) {
         this.wireframe = wireframe;
     }
 
@@ -54,7 +49,7 @@ public abstract class Presenter<V extends BaseView> {
     protected <T> Observable.Transformer<T, T> safely() {
         return observable -> observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindToLifeCycle());
+                .compose(RxLifecycle.bindFragment(view.lifeCycle()));
     }
 
     protected <T> Observable.Transformer<T, T> safelyReport() {
@@ -98,34 +93,8 @@ public abstract class Presenter<V extends BaseView> {
         return Observable.just(message);
     }
 
-    protected Observable.Transformer bindToLifeCycle() {
-        if (view instanceof BaseActivity) return RxLifecycle.bindActivity(((BaseActivity) view).lifecycle());
-        if (view instanceof BaseFragment) return RxLifecycle.bindFragment(((BaseFragment) view).lifecycle());
 
-        throw new RuntimeException("The associated view must be a BaseActivity or a BaseFragment");
-    }
-
-    public void onTargetNotification(Observable<Message> ignore) {}
-
-    public void onMismatchTargetNotification(Observable<Message> oMessage) {
-        Observable<String> oGcmNotification = oMessage
-                .map(GcmNotification::getMessageFromGcmNotification)
-                .map(gcmNotification -> gcmNotification.getTitle() + System.getProperty("line.separator") + gcmNotification.getBody());
-
-        view.showToast(oGcmNotification);
-    }
-
-    public String target() {
-        return "";
-    }
-
-    public String getString(@StringRes int resId) {
-        Context context = null;
-
-        if (view instanceof BaseActivity) context = ((BaseActivity) view);
-        if (view instanceof BaseFragment) context = ((BaseFragment) view).getActivity();
-        if (context == null) throw new RuntimeException("The associated view must be a BaseActivity or a BaseFragment");
-
-        return context.getString(resId);
+    protected String getString(@StringRes int resId) {
+        return view.getActivity().getString(resId);
     }
 }

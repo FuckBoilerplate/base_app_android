@@ -57,11 +57,15 @@ public class UsersFragment extends BaseFragment<UsersPresenter>  {
             }
         };
 
-        adapter.setOnItemClickListener((user, userViewGroup) -> presenter.goToDetail(user));
+        adapter.setOnItemClickListener((user, userViewGroup) -> {
+            presenter.goToDetail(user)
+                    .compose(safelyReport())
+                    .subscribe();
+        });
 
         recyclerViewPaginated = new RecyclerViewPaginated(rv_users, adapter);
-        recyclerViewPaginated.setLoaderPager(user -> presenter.nextPage(user));
-        recyclerViewPaginated.setResetPager(() -> presenter.refreshList());
+        recyclerViewPaginated.setLoaderPager(user -> presenter.nextPage(user).compose(safelyReport()));
+        recyclerViewPaginated.setResetPager(() -> presenter.refreshList().compose(safelyReport()));
     }
 
     @Override protected void onSyncScreen() {

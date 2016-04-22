@@ -23,6 +23,7 @@ import app.presentation.sections.Wireframe;
 
 public class LaunchActivity extends BaseActivity {
     @Inject Wireframe wireframe;
+
     @Override protected void injectDagger() {
         getApplicationComponent().inject(this);
     }

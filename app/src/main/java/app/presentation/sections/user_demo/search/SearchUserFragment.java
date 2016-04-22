@@ -16,6 +16,7 @@
 
 package app.presentation.sections.user_demo.search;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
@@ -31,6 +32,8 @@ import rx.Observable;
 
 @LayoutResFragment(R.layout.user_search_fragment)
 public class SearchUserFragment extends BaseFragment<SearchUserPresenter> implements BaseActivity.BackButtonListener {
+    public static final String HELLO_FROM_BUNDLE_WIREFRAME_KEY = "hello_from_bundle_key";
+
     @Bind(R.id.user_view_group) protected UserViewGroup user_view_group;
     @Bind(R.id.et_name) protected EditText et_name;
 
@@ -40,7 +43,15 @@ public class SearchUserFragment extends BaseFragment<SearchUserPresenter> implem
 
     @Override protected void initViews() {
         super.initViews();
-        showToast(presenter.helloFromBundle());
+
+        showToast(helloFromBundle());
+    }
+
+    private Observable<String> helloFromBundle() {
+        Bundle bundle = getArguments();
+        String helloFromBundle = bundle != null ? bundle.getString(HELLO_FROM_BUNDLE_WIREFRAME_KEY, "") : "";
+        if (!helloFromBundle.isEmpty()) return Observable.just(helloFromBundle).compose(safely());
+        return Observable.<String>empty().compose(safely());
     }
 
     @Override public void showLoading() {
@@ -52,9 +63,10 @@ public class SearchUserFragment extends BaseFragment<SearchUserPresenter> implem
     protected void bt_find_user() {
         String userName = et_name.getText().toString();
 
-        presenter.getUserByUserName(userName).subscribe(user -> {
-                user_view_group.setVisibility(View.VISIBLE);
-                user_view_group.bind(user);
+        presenter.getUserByUserName(userName).compose(safelyReportLoading())
+                .subscribe(user -> {
+                    user_view_group.setVisibility(View.VISIBLE);
+                    user_view_group.bind(user);
         });
     }
 

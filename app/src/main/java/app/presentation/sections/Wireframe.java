@@ -24,13 +24,12 @@ import org.base_app_android.R;
 import javax.inject.Inject;
 
 import app.data.sections.WireframeRepository;
-import app.presentation.foundation.views.BaseActivity;
 import app.presentation.foundation.BaseApp;
+import app.presentation.foundation.views.BaseActivity;
 import app.presentation.foundation.views.SingleActivity;
 import app.presentation.sections.dashboard.DashBoardActivity;
 import app.presentation.sections.user_demo.detail.UserFragment;
 import app.presentation.sections.user_demo.search.SearchUserFragment;
-import app.presentation.sections.user_demo.search.SearchUserPresenter;
 import rx.Observable;
 
 /**
@@ -61,7 +60,7 @@ public class Wireframe {
 
     public void searchUserScreen() {
         Bundle bundleFragment = new Bundle();
-        bundleFragment.putString(SearchUserPresenter.HELLO_FROM_BUNDLE_WIREFRAME_KEY, "Hi from wireframe bundle");
+        bundleFragment.putString(SearchUserFragment.HELLO_FROM_BUNDLE_WIREFRAME_KEY, "Hi from wireframe bundle");
 
         Bundle bundle = new Bundle();
         bundle.putString(BaseActivity.Behaviour.TITLE_KEY, baseApp.getString(R.string.find_user));

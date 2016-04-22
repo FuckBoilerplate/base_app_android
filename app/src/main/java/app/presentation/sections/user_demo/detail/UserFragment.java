@@ -34,11 +34,14 @@ public class UserFragment extends BaseFragment<UserPresenter> {
 
     @Override protected void initViews() {
         super.initViews();
-        presenter.getCurrentUser().subscribe(user -> user_view_group.bind(user));
+
+        presenter.getCurrentUser()
+                .compose(safelyReportLoading())
+                .subscribe(user -> user_view_group.bind(user));
     }
 
     @OnClick(R.id.bt_go_to_search_user)
     protected void bt_go_to_search_user() {
-        presenter.goToSearchScreen();
+        presenter.goToSearchScreen().compose(safely()).subscribe();
     }
 }

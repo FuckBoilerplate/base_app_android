@@ -24,9 +24,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.trello.rxlifecycle.FragmentEvent;
+import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
+import org.base_app_android.BuildConfig;
 import org.base_app_android.R;
 
 import javax.inject.Inject;
@@ -37,10 +38,13 @@ import app.presentation.foundation.SyncScreens;
 import app.presentation.foundation.dagger.PresentationComponent;
 import butterknife.ButterKnife;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.exceptions.CompositeException;
+import rx.schedulers.Schedulers;
 import rx_gcm.GcmReceiverUIForeground;
 import rx_gcm.Message;
 
-public abstract class BaseFragment<P extends PresenterFragment> extends RxFragment implements BaseViewFragment, GcmReceiverUIForeground {
+public abstract class BaseFragment<P extends PresenterFragment> extends RxFragment implements GcmReceiverUIForeground {
     @Inject protected P presenter;
     @Inject protected SyncScreens syncScreens;
 
@@ -59,8 +63,6 @@ public abstract class BaseFragment<P extends PresenterFragment> extends RxFragme
 
     @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        presenter.attachView(this);
         initViews();
     }
 
@@ -80,7 +82,7 @@ public abstract class BaseFragment<P extends PresenterFragment> extends RxFragme
     protected void initViews() {}
 
     /**
-     * Override this method to add functionality on sync screen call
+     * Override this method and do not call super to add functionality when sync screen is called
      */
     protected void onSyncScreen() {
         throw new RuntimeException(getString(R.string.sync_screen_error, getClass()));
@@ -98,33 +100,32 @@ public abstract class BaseFragment<P extends PresenterFragment> extends RxFragme
                 .commit();
     }
 
-    @Override public void showToast(Observable<String> oTitle) {
+    public void showToast(Observable<String> oTitle) {
         ((BaseActivity)getActivity()).showToast(oTitle);
     }
 
-    @Override public void showSnackBar(Observable<String> oTitle) {
+    public void showSnackBar(Observable<String> oTitle) {
         ((BaseActivity)getActivity()).showSnackBar(oTitle);
     }
 
-    @Override public void showLoading() {
+    public void showLoading() {
         ((BaseActivity)getActivity()).showLoading();
     }
 
-    @Override public void hideLoading() {
+    public void hideLoading() {
         ((BaseActivity)getActivity()).hideLoading();
     }
 
-    @Override public Observable<FragmentEvent> lifeCycle() {
-        return lifecycle();
+    @Override public void onTargetNotification(Observable<Message> ignore) {
+        onSyncScreen();
     }
-
-    @Override public void onTargetNotification(Observable<Message> ignore) {}
 
     @Override public void onMismatchTargetNotification(Observable<Message> oMessage) {
         Observable<String> oGcmNotification = oMessage
                 .doOnNext(message -> syncScreens.addScreen(message.target()))
                 .map(GcmNotification::getMessageFromGcmNotification)
-                .map(gcmMessageNotification -> gcmMessageNotification.getTitle() + "\n" + gcmMessageNotification.getBody());
+                .map(gcmMessageNotification -> gcmMessageNotification.getTitle() + System.getProperty("line.separator") + gcmMessageNotification.getBody());
+
         showToast(oGcmNotification);
     }
 
@@ -133,11 +134,62 @@ public abstract class BaseFragment<P extends PresenterFragment> extends RxFragme
      * handled by screensSync instance.
      */
     @Override public String target() {
-        return "";
+        return null;
     }
 
     protected void setTittle(String tittle){
         BaseActivity baseFragmentActivity = (BaseActivity) getActivity();
         baseFragmentActivity.setTitle(tittle);
+
     }
+
+    protected <T> Observable.Transformer<T, T> safely() {
+        return observable -> observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycle.bindFragment(lifecycle()));
+    }
+
+    protected <T> Observable.Transformer<T, T> safelyLoading() {
+        return observable -> observable.compose(safely()).compose(applyLoading());
+    }
+
+    protected <T> Observable.Transformer<T, T> safelyReport() {
+        return observable -> observable.compose(safely())
+                .doOnError(throwable -> {
+                    if (BuildConfig.DEBUG) showToast(parseException(throwable));
+                    else showSnackBar(parseException(throwable));
+                })
+                .onErrorResumeNext(throwable -> Observable.empty());
+    }
+
+    protected <T> Observable.Transformer<T, T> safelyReportLoading() {
+        return observable -> observable.compose(safelyReport()).compose(applyLoading());
+    }
+
+    private  <T> Observable.Transformer<T, T> applyLoading() {
+        return observable -> observable.doOnSubscribe(() -> showLoading())
+                .doOnCompleted(() -> hideLoading());
+    }
+
+    public Observable<String> parseException(Throwable throwable) {
+        if (!BuildConfig.DEBUG) return Observable.just(getString(R.string.errors_happen));
+
+        String message = throwable.getMessage();
+
+        if(throwable.getCause() != null) message += System.getProperty("line.separator") + throwable.getCause().getMessage();
+
+        if (throwable instanceof CompositeException) {
+            message += System.getProperty("line.separator");
+            CompositeException compositeException = (CompositeException) throwable;
+
+            for (Throwable exception : compositeException.getExceptions()) {
+                String exceptionName = exception.getClass().getSimpleName();
+                String exceptionMessage = exception.getMessage() != null ? exception.getMessage() : "";
+                message += exceptionName + " -> " + exceptionMessage + System.getProperty("line.separator");
+            }
+        }
+
+        return Observable.just(message);
+    }
+
 }

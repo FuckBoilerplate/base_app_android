@@ -23,6 +23,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -30,7 +31,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import org.base_app_android.R;
 
@@ -42,7 +42,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observable;
 
-public abstract class BaseActivity extends RxAppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
     @Nullable @Bind(R.id.app_bar) protected AppBarLayout app_bar;
     @Nullable @Bind(R.id.toolbar) protected Toolbar toolbar;
 

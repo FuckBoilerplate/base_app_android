@@ -41,6 +41,12 @@ public class Validator {
                 boolean isOk = aLong != 0;
                 if (!isOk) return false;
             }
+
+            if (object instanceof Double) {
+                Double aDouble = (Double)(object);
+                boolean isOk = aDouble != 0;
+                if (!isOk) return false;
+            }
         }
 
         return true;

@@ -18,6 +18,7 @@ package app.presentation.foundation;
 
 import app.data.foundation.UIUtils;
 import app.presentation.sections.Wireframe;
+import rx.Observable;
 
 public abstract class PresenterFragment {
     protected final Wireframe wireframe;
@@ -28,7 +29,10 @@ public abstract class PresenterFragment {
         this.uiUtils = uiUtils;
     }
 
-    public void back() {
-        wireframe.popCurrentScreen();
+    public Observable<Void> back() {
+        return Observable.defer(() -> {
+            wireframe.popCurrentScreen();
+            return Observable.<Void>just(null);
+        });
     }
 }

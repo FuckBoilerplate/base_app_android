@@ -24,6 +24,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+/**
+ * Store those fragments names which require to be called onSyncScreen() when they come from a background state to a foreground state.
+ */
 @Singleton public final class SyncScreens {
     private final List<String> pendingScreens;
 

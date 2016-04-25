@@ -27,19 +27,9 @@ import rx.Observable;
  */
 public class Wireframe {
     private final BaseApp baseApp;
-    private final WireframeRepository wireframeRepository;
 
-    @Inject public Wireframe(BaseApp baseApp, WireframeRepository wireframeRepository) {
+    @Inject public Wireframe(BaseApp baseApp) {
         this.baseApp = baseApp;
-        this.wireframeRepository = wireframeRepository;
-    }
-
-    public <T> Observable<T> getWireframeCurrentObject() {
-        return wireframeRepository.getWireframeCurrentObject();
-    }
-
-    public Observable<Void> setWireframeCurrentObject(Object oObject) {
-        return wireframeRepository.setWireframeCurrentObject(oObject);
     }
 
     public void popCurrentScreen() {

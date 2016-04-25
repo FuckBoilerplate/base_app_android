@@ -36,8 +36,11 @@ import org.base_app_android.R;
 
 import java.io.Serializable;
 
+import javax.inject.Inject;
+
 import app.presentation.foundation.BaseApp;
 import app.presentation.foundation.dagger.PresentationComponent;
+import app.presentation.sections.Wireframe;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observable;
@@ -45,6 +48,7 @@ import rx.Observable;
 public abstract class BaseActivity extends AppCompatActivity {
     @Nullable @Bind(R.id.app_bar) protected AppBarLayout app_bar;
     @Nullable @Bind(R.id.toolbar) protected Toolbar toolbar;
+    @Inject protected Wireframe wireframe;
 
     protected String app_name;
     private MaterialDialog materialDialog;

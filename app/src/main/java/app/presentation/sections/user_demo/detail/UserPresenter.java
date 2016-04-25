@@ -4,25 +4,18 @@ package app.presentation.sections.user_demo.detail;
 import javax.inject.Inject;
 
 import app.data.foundation.UIUtils;
+import app.data.sections.WireframeRepository;
 import app.domain.user_demo.User;
 import app.presentation.foundation.PresenterFragment;
-import app.presentation.sections.Wireframe;
 import rx.Observable;
 
 public class UserPresenter extends PresenterFragment {
 
-    @Inject public UserPresenter(Wireframe wireframe, UIUtils uiUtils) {
-        super(wireframe, uiUtils);
+    @Inject public UserPresenter(WireframeRepository wireframeRepository, UIUtils uiUtils) {
+        super(wireframeRepository, uiUtils);
     }
 
     Observable<User> getCurrentUser() {
-        return wireframe.<User>getWireframeCurrentObject();
-    }
-
-    Observable<Void> goToSearchScreen() {
-        return Observable.defer(() -> {
-            wireframe.searchUserScreen();
-            return Observable.just(null);
-        });
+        return wireframeRepository.<User>getWireframeCurrentObject();
     }
 }

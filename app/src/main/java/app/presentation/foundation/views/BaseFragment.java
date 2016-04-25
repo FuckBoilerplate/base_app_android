@@ -36,6 +36,7 @@ import app.domain.foundation.gcm.GcmNotification;
 import app.presentation.foundation.PresenterFragment;
 import app.presentation.foundation.SyncScreens;
 import app.presentation.foundation.dagger.PresentationComponent;
+import app.presentation.sections.Wireframe;
 import butterknife.ButterKnife;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -47,6 +48,7 @@ import rx_gcm.Message;
 public abstract class BaseFragment<P extends PresenterFragment> extends RxFragment implements GcmReceiverUIForeground {
     @Inject protected P presenter;
     @Inject protected SyncScreens syncScreens;
+    @Inject protected Wireframe wireframe;
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(layoutRes(), container, false);
@@ -141,6 +143,10 @@ public abstract class BaseFragment<P extends PresenterFragment> extends RxFragme
         BaseActivity baseFragmentActivity = (BaseActivity) getActivity();
         baseFragmentActivity.setTitle(tittle);
 
+    }
+
+    protected void back() {
+        wireframe.popCurrentScreen();
     }
 
     protected <T> Observable.Transformer<T, T> safely() {

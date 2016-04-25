@@ -17,22 +17,19 @@
 package app.presentation.foundation;
 
 import app.data.foundation.UIUtils;
-import app.presentation.sections.Wireframe;
+import app.data.sections.WireframeRepository;
 import rx.Observable;
 
 public abstract class PresenterFragment {
-    protected final Wireframe wireframe;
+    protected final WireframeRepository wireframeRepository;
     protected final UIUtils uiUtils;
 
-    protected PresenterFragment(Wireframe wireframe, UIUtils uiUtils) {
-        this.wireframe = wireframe;
+    protected PresenterFragment(WireframeRepository wireframeRepository, UIUtils uiUtils) {
+        this.wireframeRepository = wireframeRepository;
         this.uiUtils = uiUtils;
     }
 
-    public Observable<Void> back() {
-        return Observable.defer(() -> {
-            wireframe.popCurrentScreen();
-            return Observable.<Void>just(null);
-        });
+    public Observable<Void> dataForNextScreen(Object data) {
+        return wireframeRepository.setWireframeCurrentObject(data);
     }
 }

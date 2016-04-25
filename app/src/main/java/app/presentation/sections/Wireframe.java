@@ -23,25 +23,21 @@ import org.base_app_android.R;
 
 import javax.inject.Inject;
 
-import app.data.sections.WireframeRepository;
 import app.presentation.foundation.BaseApp;
 import app.presentation.foundation.views.BaseActivity;
 import app.presentation.foundation.views.SingleActivity;
 import app.presentation.sections.dashboard.DashBoardActivity;
 import app.presentation.sections.user_demo.detail.UserFragment;
 import app.presentation.sections.user_demo.search.SearchUserFragment;
-import rx.Observable;
 
 /**
  * Provides the routing for the application screens.
  */
 public class Wireframe {
     private final BaseApp baseApp;
-    private final WireframeRepository wireframeRepository;
 
-    @Inject public Wireframe(BaseApp baseApp, WireframeRepository wireframeRepository) {
+    @Inject public Wireframe(BaseApp baseApp) {
         this.baseApp = baseApp;
-        this.wireframeRepository = wireframeRepository;
     }
 
     public void dashboard() {
@@ -72,13 +68,6 @@ public class Wireframe {
         baseApp.getLiveActivity().startActivity(intent);
     }
 
-    public <T> Observable<T> getWireframeCurrentObject() {
-        return wireframeRepository.getWireframeCurrentObject();
-    }
-
-    public Observable<Void> setWireframeCurrentObject(Object oObject) {
-        return wireframeRepository.setWireframeCurrentObject(oObject);
-    }
 
     public void popCurrentScreen() {
         baseApp.getLiveActivity().finish();

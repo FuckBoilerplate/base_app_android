@@ -5,10 +5,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import app.data.foundation.UIUtils;
+import app.data.sections.WireframeRepository;
 import app.data.sections.user_demo.UserRepository;
 import app.domain.user_demo.User;
 import app.presentation.foundation.PresenterFragment;
-import app.presentation.sections.Wireframe;
 import rx.Observable;
 
 /**
@@ -17,14 +17,9 @@ import rx.Observable;
 public class UsersPresenter extends PresenterFragment {
     private final UserRepository repository;
 
-    @Inject public UsersPresenter(Wireframe wireframe, UserRepository repository, UIUtils uiUtils) {
-        super(wireframe, uiUtils);
+    @Inject public UsersPresenter(WireframeRepository wireframeRepository, UserRepository repository, UIUtils uiUtils) {
+        super(wireframeRepository, uiUtils);
         this.repository = repository;
-    }
-
-    public Observable<Void> goToDetail(User user) {
-        return wireframe.setWireframeCurrentObject(user)
-                .doOnNext(_I -> wireframe.userScreen());
     }
 
     public Observable<List<User>> nextPage(User user) {

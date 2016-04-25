@@ -42,6 +42,6 @@ public class UserFragment extends BaseFragment<UserPresenter> {
 
     @OnClick(R.id.bt_go_to_search_user)
     protected void bt_go_to_search_user() {
-        presenter.goToSearchScreen().compose(safely()).subscribe();
+        wireframe.searchUserScreen();
     }
 }

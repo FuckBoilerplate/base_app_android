@@ -58,9 +58,9 @@ public class UsersFragment extends BaseFragment<UsersPresenter>  {
         };
 
         adapter.setOnItemClickListener((user, userViewGroup) -> {
-            presenter.goToDetail(user)
+            presenter.dataForNextScreen(user)
                     .compose(safelyReport())
-                    .subscribe();
+                    .subscribe(_I -> wireframe.userScreen());
         });
 
         recyclerViewPaginated = new RecyclerViewPaginated(rv_users, adapter);

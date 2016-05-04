@@ -142,7 +142,6 @@ public abstract class BaseFragment<P extends PresenterFragment> extends RxFragme
     protected void setTittle(String tittle){
         BaseActivity baseFragmentActivity = (BaseActivity) getActivity();
         baseFragmentActivity.setTitle(tittle);
-
     }
 
     protected void back() {
@@ -150,8 +149,7 @@ public abstract class BaseFragment<P extends PresenterFragment> extends RxFragme
     }
 
     protected <T> Observable.Transformer<T, T> safely() {
-        return observable -> observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        return observable -> observable.compose(applySchedulers())
                 .compose(RxLifecycle.bindFragment(lifecycle()));
     }
 
@@ -170,6 +168,11 @@ public abstract class BaseFragment<P extends PresenterFragment> extends RxFragme
 
     protected <T> Observable.Transformer<T, T> safelyReportLoading() {
         return observable -> observable.compose(safelyReport()).compose(applyLoading());
+    }
+
+    protected <T> Observable.Transformer<T, T> applySchedulers() {
+        return observable -> observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     private  <T> Observable.Transformer<T, T> applyLoading() {

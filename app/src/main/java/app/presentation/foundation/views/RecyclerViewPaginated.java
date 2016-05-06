@@ -20,6 +20,8 @@ import android.view.View;
 
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
 
+import org.base_app_android.R;
+
 import java.util.List;
 
 import library.recycler_view.BindView;
@@ -35,6 +37,8 @@ public class RecyclerViewPaginated<T, V extends View & BindView.Binder<T>> {
     public RecyclerViewPaginated(SuperRecyclerView recyclerView, OkRecyclerViewAdapter<T, V> adapter) {
         this.recyclerView = recyclerView;
         this.adapter = adapter;
+        this.recyclerView.getSwipeToRefresh().setColorSchemeResources(R.color.colorPrimary);
+        this.adapter.clear();
     }
 
     public void setLoaderPager(LoaderPager<T> loaderPager) {

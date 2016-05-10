@@ -142,7 +142,11 @@ public abstract class BaseFragment<P extends PresenterFragment> extends RxFragme
      * Override this method if the fragment requires to be notified, whether by a gcm notification, or due to some other internal event
      * handled by screensSync instance.
      */
-    @Override public String target() {
+    @Override public boolean matchesTarget(String key) {
+        return false;
+    }
+
+    public String target() {
         return null;
     }
 

@@ -16,9 +16,13 @@
 
 package app.presentation.sections.launch;
 
+import javax.inject.Inject;
+
+import app.data.foundation.analytics.GoogleAnalyticsSender;
 import app.presentation.foundation.views.BaseActivity;
 
 public class LaunchActivity extends BaseActivity {
+    @Inject GoogleAnalyticsSender googleAnalytics;
 
     @Override protected void injectDagger() {
         getApplicationComponent().inject(this);
@@ -27,5 +31,6 @@ public class LaunchActivity extends BaseActivity {
     @Override protected void initViews() {
         super.initViews();
         wireframe.dashboard();
+        googleAnalytics.send(this.getClass().getSimpleName());
     }
 }

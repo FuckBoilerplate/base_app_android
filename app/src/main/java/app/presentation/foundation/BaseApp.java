@@ -19,6 +19,12 @@ package app.presentation.foundation;
 import android.app.Application;
 import android.support.annotation.Nullable;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
+
+import org.base_app_android.BuildConfig;
+import org.base_app_android.R;
+
 import app.data.foundation.gcm.GcmMessageReceiver;
 import app.data.foundation.gcm.GcmTokenReceiver;
 import app.presentation.foundation.dagger.DaggerPresentationComponent;
@@ -33,12 +39,15 @@ import rx_gcm.internal.RxGcm;
  */
 public class BaseApp extends Application {
     private PresentationComponent presentationComponent;
+    private GoogleAnalytics analytics;
+    private Tracker tracker;
 
     @Override public void onCreate() {
         super.onCreate();
         initInject();
         AppCare.YesSir.takeCareOn(this);
         initGcm();
+        initGoogleAnalytics();
     }
 
     private void initInject() {
@@ -52,6 +61,29 @@ public class BaseApp extends Application {
                 .subscribe(token -> {}, error -> {});
 
         RxGcm.Notifications.onRefreshToken(GcmTokenReceiver.class);
+    }
+
+    private void initGoogleAnalytics() {
+        analytics = GoogleAnalytics.getInstance(this);
+
+        if(BuildConfig.DEBUG) {
+            // true = for log output, it does not sent data to Google Analytics
+            analytics.setDryRun(true);
+            // To enable debug logging on a device run:
+            // adb shell setprop log.tag.GAv4 DEBUG
+            // adb logcat -s GAv4
+            // true = disable google analytics on the app
+//        analytics.setAppOptOut(true);
+        }
+
+        tracker = analytics.newTracker(getString(R.string.tracking_id));
+        tracker.enableExceptionReporting(true);
+        tracker.enableAdvertisingIdCollection(true);
+        tracker.enableAutoActivityTracking(false);
+    }
+
+    public Tracker getTracker() {
+        return tracker;
     }
 
     public PresentationComponent getPresentationComponent() {

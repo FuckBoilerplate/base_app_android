@@ -16,6 +16,8 @@
 
 package app.presentation.sections.user_demo.detail;
 
+import android.support.annotation.Nullable;
+
 import org.base_app_android.R;
 
 import app.presentation.foundation.views.BaseFragment;
@@ -30,6 +32,11 @@ public class UserFragment extends BaseFragment<UserPresenter> {
 
     @Override protected void injectDagger() {
         getApplicationComponent().inject(this);
+    }
+
+    @Nullable
+    @Override protected String getScreenNameForGoogleAnalytics() {
+        return this.getClass().getSimpleName();
     }
 
     @Override protected void initViews() {

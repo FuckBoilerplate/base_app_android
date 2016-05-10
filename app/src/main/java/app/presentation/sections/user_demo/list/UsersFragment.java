@@ -16,6 +16,7 @@
 
 package app.presentation.sections.user_demo.list;
 
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.ViewGroup;
 
@@ -42,7 +43,13 @@ public class UsersFragment extends BaseFragment<UsersPresenter>  {
         getApplicationComponent().inject(this);
     }
 
+    @Nullable
+    @Override protected String getScreenNameForGoogleAnalytics() {
+        return this.getClass().getSimpleName();
+    }
+
     @Override protected void initViews() {
+        super.initViews();
         setUpRecyclerView();
     }
 

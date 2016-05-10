@@ -17,6 +17,7 @@
 package app.presentation.sections.user_demo.search;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
 
@@ -39,6 +40,11 @@ public class SearchUserFragment extends BaseFragment<SearchUserPresenter> implem
 
     @Override protected void injectDagger() {
         getApplicationComponent().inject(this);
+    }
+
+    @Nullable
+    @Override protected String getScreenNameForGoogleAnalytics() {
+        return this.getClass().getSimpleName();
     }
 
     @Override protected void initViews() {

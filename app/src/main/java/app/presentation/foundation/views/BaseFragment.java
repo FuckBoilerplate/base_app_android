@@ -32,6 +32,7 @@ import org.base_app_android.R;
 
 import javax.inject.Inject;
 
+import app.data.foundation.analytics.GoogleAnalyticsSender;
 import app.domain.foundation.gcm.GcmNotification;
 import app.presentation.foundation.PresenterFragment;
 import app.presentation.foundation.SyncScreens;
@@ -49,6 +50,7 @@ public abstract class BaseFragment<P extends PresenterFragment> extends RxFragme
     @Inject protected P presenter;
     @Inject protected SyncScreens syncScreens;
     @Inject protected Wireframe wireframe;
+    @Inject protected GoogleAnalyticsSender googleAnalytics;
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(layoutRes(), container, false);
@@ -81,7 +83,12 @@ public abstract class BaseFragment<P extends PresenterFragment> extends RxFragme
     }
 
     protected abstract void injectDagger();
-    protected void initViews() {}
+    @Nullable protected abstract String getScreenNameForGoogleAnalytics();
+
+    protected void initViews() {
+        String screenName = getScreenNameForGoogleAnalytics();
+        if (screenName != null) googleAnalytics.send(screenName);
+    }
 
     /**
      * Override this method and do not call super to add functionality when sync screen is called

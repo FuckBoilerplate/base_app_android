@@ -30,6 +30,9 @@ import org.base_app_android.R;
 
 import java.util.Arrays;
 
+import javax.inject.Inject;
+
+import app.data.foundation.analytics.GoogleAnalyticsSender;
 import app.domain.dashboard.ItemMenu;
 import app.presentation.foundation.views.BaseActivity;
 import app.presentation.foundation.views.LayoutResActivity;
@@ -46,6 +49,7 @@ public class DashBoardActivity extends BaseActivity {
 
     @Bind(R.id.rv_menu_items) protected RecyclerView rv_menu_items;
     @Bind(R.id.drawer_layout) protected DrawerLayout drawer_layout;
+    @Inject GoogleAnalyticsSender googleAnalytics;
     private OkRecyclerViewAdapter<ItemMenu, ItemMenuViewGroup> adapter;
     private ActionBarDrawerToggle drawerToggle;
 
@@ -57,6 +61,7 @@ public class DashBoardActivity extends BaseActivity {
         super.initViews();
         setUpDrawerToggle();
         setUpRecyclerView();
+        googleAnalytics.send(this.getClass().getSimpleName());
     }
 
     @Override protected void onDestroy() {

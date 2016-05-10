@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'android-apt'
-apply plugin: 'com.google.gms.google-services'
 
 
 buildscript {
@@ -19,7 +18,7 @@ buildscript {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "org.base_app_android"
@@ -76,6 +75,12 @@ android {
     }
 }
 
+ext {
+    versions = [
+            support: "23.3.0",
+            googlePlayServices: "8.4.0"
+    ]
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -96,8 +101,9 @@ dependencies {
     compile "org.projectlombok:lombok:1.16.6"
 
     //Presentation layer
-    compile "com.android.support:appcompat-v7:23.3.0"
-    compile "com.android.support:design:23.3.0"
+    compile "com.android.support:appcompat-v7:${versions.support}"
+    compile "com.android.support:design:${versions.support}"
+    compile "com.google.android.gms:play-services-analytics:${versions.googlePlayServices}"
     compile "io.reactivex:rxandroid:1.0.1"
     compile "com.squareup.picasso:picasso:1.0.1"
     compile "com.squareup.picasso:picasso:2.5.2"
@@ -124,7 +130,7 @@ dependencies {
 }
 
 configurations.all {
-    resolutionStrategy.force "com.android.support:support-annotations:23.2.0"
+    resolutionStrategy.force "com.android.support:support-annotations:${versions.support}"
 }
 
 task('freshStart') << {
@@ -189,3 +195,6 @@ class Helper {
         if (!fileSrc.renameTo(fileDst)) println("Failed to replace " + fileDst.getAbsolutePath())
     }
 }
+
+// Works if you put this line at the bottom of this file, not at the top
+apply plugin: 'com.google.gms.google-services'

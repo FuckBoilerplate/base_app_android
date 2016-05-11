@@ -16,29 +16,54 @@
 
 package app.domain.foundation.gcm;
 
-import com.google.common.reflect.TypeToken;
+import android.support.annotation.Nullable;
+
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.internal.$Gson$Types;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.Data;
 import rx_gcm.Message;
-
 
 @Data public class GcmNotification<T> {
     private final T data;
     private final String title, body;
 
-    public static <T> GcmNotification<T> getMessageFromGcmNotification(Message message) {
-        String payload = message.payload().toString();
-
-        Type type = new TypeToken<GcmNotification<T>>(){}.getType();
-        GcmNotification<T> gcmNotification = new GsonBuilder().create().fromJson(payload, type);
-
-        return gcmNotification;
+    public static GcmNotification getMessageFromGcmNotification(Message message) {
+        return getMessageFromGcmNotification(Object.class, message);
     }
 
-    public static <T> T getDataFromGcmNotification(Message message) {
-        return (T) getMessageFromGcmNotification(message).getData();
+    public static <T> GcmNotification<T> getMessageFromGcmNotification(Class<T> classData, Message message) {
+        String payload = message.payload().getString("payload");
+        String title = message.payload().getString("title");
+        String body = message.payload().getString("body");
+
+        Type type = $Gson$Types.newParameterizedTypeWithOwner(null, classData);
+        T data = new Gson().fromJson(payload, type);
+
+        return new GcmNotification(data, title, body);
+    }
+
+    public static <T> GcmNotification<List<T>> getMessageArrayListFromGcmNotification(Class<T> classData, Message message) {
+        String payload = message.payload().getString("payload");
+        String title = message.payload().getString("title");
+        String body = message.payload().getString("body");
+
+        Type typeCollection = $Gson$Types.newParameterizedTypeWithOwner(null, ArrayList.class, classData);
+
+        List<T> data = new GsonBuilder().create().fromJson(payload, typeCollection);
+        return new GcmNotification(data, title, body);
+    }
+
+    public static <T> T getDataFromGcmNotification(@Nullable Class<T> classData, Message message) {
+        return getMessageFromGcmNotification(classData, message).getData();
+    }
+
+    public static <T> List<T> getDataArrayListFromGcmNotification(@Nullable Class<T> classData, Message message) {
+        return getMessageArrayListFromGcmNotification(classData, message).getData();
     }
 }

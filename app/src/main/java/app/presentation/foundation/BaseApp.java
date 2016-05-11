@@ -30,8 +30,8 @@ import app.data.foundation.gcm.GcmTokenReceiver;
 import app.presentation.foundation.dagger.DaggerPresentationComponent;
 import app.presentation.foundation.dagger.PresentationComponent;
 import app.presentation.foundation.dagger.PresentationModule;
+import app.presentation.foundation.gcm.GcmReceiverBackground;
 import app.presentation.foundation.views.BaseActivity;
-import rx_gcm.GcmReceiverUIBackground;
 import rx_gcm.internal.RxGcm;
 
 /**
@@ -57,7 +57,7 @@ public class BaseApp extends Application {
     }
 
     private void initGcm() {
-        RxGcm.Notifications.register(this, GcmMessageReceiver.class, GcmReceiverUIBackground.class)
+        RxGcm.Notifications.register(this, GcmMessageReceiver.class, GcmReceiverBackground.class)
                 .subscribe(token -> {}, error -> {});
 
         RxGcm.Notifications.onRefreshToken(GcmTokenReceiver.class);

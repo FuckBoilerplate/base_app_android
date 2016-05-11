@@ -144,6 +144,7 @@ task('freshStart') << {
     Helper.moveFileDeleting(startFresh+"RestApiMock", data+"foundation/net/mock/", "RestApiMock.java")
     Helper.moveFileDeleting(startFresh+"Seeder", data+"foundation/net/mock/", "Seeder.java")
     Helper.moveFileDeleting(startFresh+"RxProviders", data+"foundation/cache/", "RxProviders.java")
+    Helper.moveFileDeleting(startFresh+"GoogleAnalyticsSender", data+"foundation/analytics/", "GoogleAnalyticsSender.java")
 
     String domain = "app/src/main/java/app/domain/"
     Helper.removeDir(domain+"user_demo")
@@ -153,7 +154,7 @@ task('freshStart') << {
     Helper.removeDir(presentation+"sections/user_demo")
     Helper.removeDir(presentation+"sections/dashboard")
     Helper.moveFileDeleting(startFresh+"PresentationComponent", presentation+"foundation/dagger/", "PresentationComponent.java")
-    Helper.moveFileDeleting(startFresh+"LaunchPresenter", presentation+"sections/launch/", "LaunchPresenter.java")
+    Helper.moveFileDeleting(startFresh+"LaunchActivity", presentation+"sections/launch/", "LaunchActivity.java")
 
     Helper.moveFileDeleting(startFresh+"Wireframe", presentation+"sections", "Wireframe.java")
 

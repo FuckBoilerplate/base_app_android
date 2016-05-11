@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        tools:src="@drawable/geek" />
+        tools:src="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/tv_name"

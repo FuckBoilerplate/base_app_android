@@ -1,5 +1,7 @@
 package app.presentation.sections.user_demo.list;
 
+import android.text.TextUtils;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -30,6 +32,15 @@ public class UsersPresenter extends PresenterFragment {
 
     public Observable<List<User>> refreshList() {
         return repository.getUsers(0, true);
+    }
+
+    public Observable<List<User>> filter(String query) {
+        if (TextUtils.isEmpty(query)) return refreshList();
+
+        return refreshList()
+                .flatMapIterable(users -> users)
+                .filter(user -> user.getLogin().toLowerCase().contains(query.trim().toLowerCase()))
+                .toList();
     }
 
 }

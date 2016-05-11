@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_users"
+            android:checked="false"
+            android:icon="@drawable/ic_users"
+            android:title="@string/users"
+            app:actionLayout="@layout/drawer_counter" />
+
+        <item
+            android:id="@+id/drawer_user"
+            android:checked="false"
+            android:icon="@drawable/ic_user"
+            android:title="@string/user" />
+
+        <item
+            android:id="@+id/drawer_find_user"
+            android:checked="false"
+            android:icon="@drawable/ic_search"
+            android:title="@string/find_user" />
+    </group>
+</menu>

@@ -18,22 +18,20 @@ package app.presentation.sections.dashboard;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AlertDialog;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.base_app_android.R;
-
-import java.util.Arrays;
 
 import javax.inject.Inject;
 
 import app.data.foundation.analytics.GoogleAnalyticsSender;
-import app.domain.dashboard.ItemMenu;
 import app.presentation.foundation.views.BaseActivity;
 import app.presentation.foundation.views.LayoutResActivity;
 import app.presentation.sections.user_demo.detail.UserFragment;
@@ -41,16 +39,12 @@ import app.presentation.sections.user_demo.list.UsersFragment;
 import app.presentation.sections.user_demo.search.SearchUserFragment;
 import butterknife.Bind;
 import butterknife.BindString;
-import library.recycler_view.OkRecyclerViewAdapter;
 
 @LayoutResActivity(R.layout.dashboard_activity)
 public class DashBoardActivity extends BaseActivity {
-    private final static int ID_USERS = 1, ID_USER = 2, ID_SEARCH = 3;
-
-    @Bind(R.id.rv_menu_items) protected RecyclerView rv_menu_items;
     @Bind(R.id.drawer_layout) protected DrawerLayout drawer_layout;
+    @Bind(R.id.navigation_view) protected NavigationView navigation_view;
     @Inject GoogleAnalyticsSender googleAnalytics;
-    private OkRecyclerViewAdapter<ItemMenu, ItemMenuViewGroup> adapter;
     private ActionBarDrawerToggle drawerToggle;
 
     @Override protected void injectDagger() {
@@ -60,7 +54,7 @@ public class DashBoardActivity extends BaseActivity {
     @Override protected void initViews() {
         super.initViews();
         setUpDrawerToggle();
-        setUpRecyclerView();
+        setUpNavigationView();
         googleAnalytics.send(this.getClass().getSimpleName());
     }
 
@@ -86,32 +80,27 @@ public class DashBoardActivity extends BaseActivity {
         drawer_layout.addDrawerListener(drawerToggle);
     }
 
-    private void setUpRecyclerView() {
-        rv_menu_items.setHasFixedSize(true);
-        rv_menu_items.setLayoutManager(new LinearLayoutManager(this));
+    private void setUpNavigationView() {
+        navigation_view.setNavigationItemSelectedListener(menuItem -> {
+            if (!menuItem.isChecked()) menuItem.setChecked(true);
+            drawer_layout.closeDrawers();
 
-        adapter = new OkRecyclerViewAdapter<ItemMenu, ItemMenuViewGroup>() {
-            @Override protected ItemMenuViewGroup onCreateItemView(ViewGroup viewGroup, int i) {
-                return new ItemMenuViewGroup(DashBoardActivity.this);
+            switch (menuItem.getItemId()) {
+                case R.id.drawer_users:
+                    showUsers();
+                    return true;
+                case R.id.drawer_user:
+                    showUser();
+                    return true;
+                case R.id.drawer_find_user:
+                    showUserSearch();
+                    return true;
+                default:
+                    return true;
             }
-        };
-
-        adapter.setOnItemClickListener((itemMenu, itemMenuViewGroup) -> {
-            drawer_layout.closeDrawer(rv_menu_items);
-
-            if (itemMenu.getId() == ID_USERS) showUsers();
-            else if (itemMenu.getId() == ID_USER) showUser();
-            else showUserSearch();
         });
 
-        adapter.setAll(Arrays.asList(
-                new ItemMenu(ID_USERS, getString(R.string.users), R.drawable.ic_users),
-                new ItemMenu(ID_USER, getString(R.string.user), R.drawable.ic_user),
-                new ItemMenu(ID_SEARCH, getString(R.string.find_user), R.drawable.ic_search)
-        ));
-
-        rv_menu_items.setAdapter(adapter);
-
+        navigation_view.setCheckedItem(R.id.drawer_users);
         showUsers();
     }
 
@@ -146,6 +135,28 @@ public class DashBoardActivity extends BaseActivity {
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) return true;
         else if (item.getItemId() == android.R.id.home) onBackPressed();
+        else if (item.getItemId() == R.id.action_logout) askForLogout();
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void askForLogout() {
+        new AlertDialog.Builder(DashBoardActivity.this)
+                .setTitle(R.string.app_name)
+                .setMessage(R.string.ask_logout)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.yes, (dialog, id) -> finish())
+                .setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.cancel())
+                .show();
+    }
+
+    public void showUsersCounter(int usersLoaded) {
+        TextView tvOrdersNotSent = (TextView) navigation_view.getMenu().findItem(R.id.drawer_users).getActionView().findViewById(R.id.tv_counter);
+        tvOrdersNotSent.setText(String.valueOf(usersLoaded));
+        tvOrdersNotSent.setVisibility(usersLoaded > 0 ? View.VISIBLE : View.GONE);
     }
 }

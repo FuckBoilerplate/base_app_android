@@ -50,6 +50,7 @@ android {
         main {
             res.srcDirs =
                     [
+                            'src/main/res/drawable-svg',
                             'src/main/res/sections/common',
                             'src/main/res/sections/user_demo',
                             'src/main/res/sections/dashboard',
@@ -158,7 +159,9 @@ task('freshStart') << {
 
     Helper.removeDir("app/src/main/res/sections/user_demo")
     Helper.removeDir("app/src/main/res/sections/dashboard")
-    Helper.removeDir("app/src/main/res/drawable-xxxhdpi")
+    Helper.removeDir("app/src/main/res/drawable")
+    Helper.removeDir("app/src/main/res/drawable-svg")
+    Helper.removeDir("app/src/main/res/menu")
 
     Helper.moveFileDeleting(startFresh+"AndroidManifest", "app/src/main/", "AndroidManifest.xml")
     Helper.moveFileDeleting(startFresh+"strings", "app/src/main/res/values/", "strings.xml")

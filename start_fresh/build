@@ -50,6 +50,7 @@ android {
         main {
             res.srcDirs =
                     [
+                            'src/main/res/drawable-svg',
                             'src/main/res/sections/common',
                             'src/main/res/sections/user_demo',
                             'src/main/res/sections/dashboard',

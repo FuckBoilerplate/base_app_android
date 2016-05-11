@@ -90,7 +90,7 @@ dependencies {
     apt "com.google.dagger:dagger-compiler:2.0.2"
     compile "com.google.dagger:dagger:2.0.2"
     provided "org.glassfish:javax.annotation:10.0-b28"
-    compile "com.github.VictorAlbertos:RxGcm:0.2.2"
+    compile "com.github.VictorAlbertos:RxGcm:0.2.3"
 
     //Data layer
     compile "com.squareup.retrofit2:retrofit:2.0.0-beta4"

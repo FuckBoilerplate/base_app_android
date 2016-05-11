@@ -16,8 +16,6 @@
 
 package app.presentation.foundation;
 
-import android.support.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,15 +36,13 @@ import javax.inject.Singleton;
         if (!pendingScreens.contains(screen)) pendingScreens.add(screen);
     }
 
-    public boolean needToSync(@Nullable String candidate) {
+    public boolean needToSync(Matcher matcher) {
         boolean needToSync = false;
-
-        if (candidate == null) return needToSync;
 
         int index = 0;
 
         for (String screen : pendingScreens) {
-            if (candidate.equals(screen)) {
+            if (matcher.matchesTarget(screen)) {
                 needToSync = true;
                 break;
             }
@@ -58,4 +54,7 @@ import javax.inject.Singleton;
         return needToSync;
     }
 
+    public interface Matcher {
+        boolean matchesTarget(String key);
+    }
 }

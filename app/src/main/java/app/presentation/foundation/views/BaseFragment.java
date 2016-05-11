@@ -46,7 +46,7 @@ import rx.schedulers.Schedulers;
 import rx_gcm.GcmReceiverUIForeground;
 import rx_gcm.Message;
 
-public abstract class BaseFragment<P extends PresenterFragment> extends RxFragment implements GcmReceiverUIForeground {
+public abstract class BaseFragment<P extends PresenterFragment> extends RxFragment implements GcmReceiverUIForeground, SyncScreens.Matcher {
     @Inject protected P presenter;
     @Inject protected SyncScreens syncScreens;
     @Inject protected Wireframe wireframe;
@@ -73,7 +73,7 @@ public abstract class BaseFragment<P extends PresenterFragment> extends RxFragme
     @Override public void onResume() {
         super.onResume();
 
-        boolean needToSync = syncScreens.needToSync(target());
+        boolean needToSync = syncScreens.needToSync(this);
         if (needToSync) onSyncScreen();
     }
 
@@ -144,10 +144,6 @@ public abstract class BaseFragment<P extends PresenterFragment> extends RxFragme
      */
     @Override public boolean matchesTarget(String key) {
         return false;
-    }
-
-    public String target() {
-        return null;
     }
 
     protected void setTittle(String tittle){

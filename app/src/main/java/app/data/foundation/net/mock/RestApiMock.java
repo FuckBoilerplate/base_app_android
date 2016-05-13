@@ -52,7 +52,7 @@ public class RestApiMock implements RestApi {
 
     @Override public Observable<Response<List<User>>> getUsers(@Query("since") int lastIdQueried, @Query("per_page") int perPage) {
         return Observable.defer(() -> {
-            Object[] values = {lastIdQueried, perPage};
+            Object[] values = {perPage};
             if (validator.notNullEmpty(values)) return responseSuccess(seeder.getUsers());
             else return responseError();
         });

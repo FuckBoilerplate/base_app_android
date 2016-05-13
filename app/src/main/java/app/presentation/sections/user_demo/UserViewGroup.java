@@ -31,9 +31,9 @@ import org.base_app_android.R;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import app.domain.user_demo.User;
-import library.recycler_view.BindView;
+import library.recycler_view.OkRecyclerViewAdapter;
 
-public class UserViewGroup extends FrameLayout implements BindView.Binder<User> {
+public class UserViewGroup extends FrameLayout implements OkRecyclerViewAdapter.Binder<User> {
     @Bind(R.id.iv_avatar) protected ImageView iv_avatar;
     @Bind(R.id.tv_name) protected TextView tv_name;
 
@@ -57,7 +57,7 @@ public class UserViewGroup extends FrameLayout implements BindView.Binder<User> 
     }
 
     @Override public void bind(User user, int position) {
-        tv_name.setText(user.getId() + ":" + user.getLogin());
+        tv_name.setText(user.getId() + ":" + user.getLogin() + System.currentTimeMillis());
 
         if (user.getAvatarUrl() == null || user.getAvatarUrl().isEmpty()) return;
 

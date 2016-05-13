@@ -26,12 +26,12 @@ import android.widget.TextView;
 
 import org.base_app_android.R;
 
+import app.domain.dashboard.ItemMenu;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import app.domain.dashboard.ItemMenu;
-import library.recycler_view.BindView;
+import library.recycler_view.OkRecyclerViewAdapter;
 
-public class ItemMenuViewGroup extends FrameLayout implements BindView.Binder<ItemMenu> {
+public class ItemMenuViewGroup extends FrameLayout implements OkRecyclerViewAdapter.Binder<ItemMenu> {
     @Bind(R.id.iv_icon) protected ImageView iv_icon;
     @Bind(R.id.tv_title) protected TextView tv_title;
 

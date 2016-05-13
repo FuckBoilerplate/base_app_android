@@ -32,29 +32,29 @@ import com.malinskiy.superrecyclerview.SuperRecyclerView;
 
 import org.base_app_android.R;
 
+import java.util.List;
+
 import app.domain.user_demo.User;
 import app.presentation.foundation.views.BaseFragment;
 import app.presentation.foundation.views.LayoutResFragment;
-import app.presentation.foundation.views.RecyclerViewPaginated;
 import app.presentation.sections.dashboard.DashBoardActivity;
 import app.presentation.sections.user_demo.UserViewGroup;
 import butterknife.Bind;
 import library.recycler_view.OkRecyclerViewAdapter;
+import rx.Observable;
 
 
 @LayoutResFragment(R.layout.users_fragment)
 public class UsersFragment extends BaseFragment<UsersPresenter>  {
     @Bind(R.id.rv_users) protected SuperRecyclerView rv_users;
     private OkRecyclerViewAdapter<User, UserViewGroup> adapter;
-    private RecyclerViewPaginated<User, UserViewGroup> recyclerViewPaginated;
     private SearchView searchView;
 
     @Override protected void injectDagger() {
         getApplicationComponent().inject(this);
     }
 
-    @Nullable
-    @Override protected String getScreenNameForGoogleAnalytics() {
+    @Nullable @Override protected String getScreenNameForGoogleAnalytics() {
         return this.getClass().getSimpleName();
     }
 
@@ -65,25 +65,33 @@ public class UsersFragment extends BaseFragment<UsersPresenter>  {
     }
 
     private void setUpRecyclerView() {
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-        //gridLayoutManager.setReverseLayout(true);
-        rv_users.setLayoutManager(gridLayoutManager);
-
         adapter = new OkRecyclerViewAdapter<User, UserViewGroup>() {
             @Override protected UserViewGroup onCreateItemView(ViewGroup parent, int viewType) {
                 return new UserViewGroup(getActivity());
             }
         };
 
-        adapter.setOnItemClickListener((user, userViewGroup) -> {
+        adapter.setOnItemClickListener((user, userViewGroup, position) ->
             presenter.dataForNextScreen(user)
                     .compose(safelyReport())
-                    .subscribe(_I -> wireframe.userScreen());
-        });
+                    .subscribe(_I -> wireframe.userScreen())
+        );
 
-        recyclerViewPaginated = new RecyclerViewPaginated(rv_users, adapter);
-        recyclerViewPaginated.setLoaderPager(user -> presenter.nextPage(user).compose(safelyReport()).doOnCompleted(this::populateCounterUsers));
-        recyclerViewPaginated.setResetPager(() -> presenter.refreshList().compose(safelyReport()).doOnCompleted(this::populateCounterUsers));
+        adapter.setRxPager(R.layout.srv_progress,
+                lastUser -> presenter.nextPage(lastUser)
+                        .compose(safelyReport())
+                        .doOnCompleted(this::populateCounterUsers)
+        );
+
+        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+        adapter.configureGridLayoutManagerForPagination(layoutManager);
+
+        rv_users.setLayoutManager(layoutManager);
+        rv_users.setAdapter(adapter);
+        rv_users.setRefreshListener(() -> {
+            Observable<List<User>> oUsers = presenter.refreshList().compose(safelyReport()).doOnCompleted(this::populateCounterUsers);
+            adapter.resetPager(oUsers);
+        });
     }
 
     @Override protected void onSyncScreen() {
@@ -91,14 +99,12 @@ public class UsersFragment extends BaseFragment<UsersPresenter>  {
     }
 
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_filter, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
+    @Override public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.action_search:
                 searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
@@ -134,18 +140,12 @@ public class UsersFragment extends BaseFragment<UsersPresenter>  {
         });
     }
 
-    /**
-     * It does not work properly because of {@link RecyclerViewPaginated} implementation.
-     * It is just an example.
-     * @param query
-     */
     private void filterUsers(String query) {
-        presenter.filter(query)
-                .compose(safelyReportLoading())
-                .subscribe(users -> {
-                    adapter.setAll(users);
-                    populateCounterUsers();
-                });
+        Observable<List<User>> oUsers = presenter.filter(query)
+                .compose(safelyReport())
+                .doOnNext(users -> {})
+                .doOnCompleted(this::populateCounterUsers);
+        adapter.resetPager(oUsers);
     }
 
     private void populateCounterUsers() {

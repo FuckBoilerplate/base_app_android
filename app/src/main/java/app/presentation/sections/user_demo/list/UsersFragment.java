@@ -49,6 +49,7 @@ public class UsersFragment extends BaseFragment<UsersPresenter>  {
     @Bind(R.id.rv_users) protected SuperRecyclerView rv_users;
     private OkRecyclerViewAdapter<User, UserViewGroup> adapter;
     private SearchView searchView;
+    private String query;
 
     @Override protected void injectDagger() {
         getApplicationComponent().inject(this);
@@ -78,10 +79,9 @@ public class UsersFragment extends BaseFragment<UsersPresenter>  {
         );
 
         adapter.setRxPager(R.layout.srv_progress,
-                lastUser -> presenter.nextPage(lastUser)
-                        .compose(safelyReport())
-                        .doOnCompleted(this::populateCounterUsers)
-        );
+                lastUser -> presenter.nextPage(lastUser, query)
+                            .compose(safelyReport())
+                            .doOnCompleted(this::populateCounterUsers));
 
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         adapter.configureGridLayoutManagerForPagination(layoutManager);
@@ -89,7 +89,7 @@ public class UsersFragment extends BaseFragment<UsersPresenter>  {
         rv_users.setLayoutManager(layoutManager);
         rv_users.setAdapter(adapter);
         rv_users.setRefreshListener(() -> {
-            Observable<List<User>> oUsers = presenter.refreshList().compose(safelyReport()).doOnCompleted(this::populateCounterUsers);
+            Observable<List<User>> oUsers = presenter.refreshList(query).compose(safelyReport()).doOnCompleted(this::populateCounterUsers);
             adapter.resetPager(oUsers);
         });
     }
@@ -118,7 +118,9 @@ public class UsersFragment extends BaseFragment<UsersPresenter>  {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override public boolean onQueryTextSubmit(String query) {
                 hideKeyboard(searchView);
-                filterUsers(query);
+                UsersFragment.this.query = query;
+                Observable<List<User>> oUsers = presenter.refreshList(query).compose(safelyReport()).doOnCompleted(() -> populateCounterUsers());
+                adapter.resetPager(oUsers);
                 return true;
             }
 
@@ -130,7 +132,9 @@ public class UsersFragment extends BaseFragment<UsersPresenter>  {
         // For Android API 14+
         MenuItemCompat.setOnActionExpandListener(menuItem, new MenuItemCompat.OnActionExpandListener() {
             @Override public boolean onMenuItemActionCollapse(MenuItem item) {
-                filterUsers("");
+                UsersFragment.this.query = null;
+                Observable<List<User>> oUsers = presenter.refreshList(query).compose(safelyReport()).doOnCompleted(() -> populateCounterUsers());
+                adapter.resetPager(oUsers);
                 return true;
             }
 
@@ -140,17 +144,11 @@ public class UsersFragment extends BaseFragment<UsersPresenter>  {
         });
     }
 
-    private void filterUsers(String query) {
-        Observable<List<User>> oUsers = presenter.filter(query)
-                .compose(safelyReport())
-                .doOnNext(users -> {})
-                .doOnCompleted(this::populateCounterUsers);
-        adapter.resetPager(oUsers);
-    }
-
     private void populateCounterUsers() {
-        if (getActivity() instanceof DashBoardActivity)
-            ((DashBoardActivity) getActivity()).showUsersCounter(adapter.getAll().size());
+        rv_users.postDelayed(() -> {
+            if (getActivity() instanceof DashBoardActivity)
+                ((DashBoardActivity) getActivity()).showUsersCounter(adapter.getAll().size());
+        }, 500);
     }
 
     private void hideKeyboard(final View view) {

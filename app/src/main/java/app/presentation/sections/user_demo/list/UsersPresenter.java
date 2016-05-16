@@ -24,20 +24,21 @@ public class UsersPresenter extends PresenterFragment {
         this.repository = repository;
     }
 
-    public Observable<List<User>> nextPage(User user) {
+    public Observable<List<User>> nextPage(User user, String query) {
         Integer id = null;
         if (user != null) id = user.getId();
-        return repository.getUsers(id, false);
+
+        return filter(repository.getUsers(id, false), query);
     }
 
-    public Observable<List<User>> refreshList() {
-        return repository.getUsers(0, true);
+    public Observable<List<User>> refreshList(String query) {
+        return filter(repository.getUsers(0, true), query);
     }
 
-    public Observable<List<User>> filter(String query) {
-        if (TextUtils.isEmpty(query)) return refreshList();
+    private Observable<List<User>> filter(Observable<List<User>> oUsers, String query) {
+        if (TextUtils.isEmpty(query)) return oUsers;
 
-        return refreshList()
+        return oUsers
                 .flatMapIterable(users -> users)
                 .filter(user -> user.getLogin().toLowerCase().contains(query.trim().toLowerCase()))
                 .toList();

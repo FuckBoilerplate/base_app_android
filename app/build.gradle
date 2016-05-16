@@ -116,7 +116,7 @@ dependencies {
     compile "com.jakewharton:butterknife:7.0.1"
     compile "com.trello:rxlifecycle:0.5.0"
     compile "com.trello:rxlifecycle-components:0.5.0"
-    compile "com.github.FuckBoilerplate:OkAdapters:0.0.9"
+    compile "com.github.FuckBoilerplate:OkAdapters:0.1.0"
 
     //Testing
     testCompile 'junit:junit:4.12'

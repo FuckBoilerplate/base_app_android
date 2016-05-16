@@ -48,11 +48,12 @@ import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.containsString;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UsersTest extends BaseTest {
-    private static final int INDEX_LIST = 11, ID_USER_REFINERIA = 8580307;
-    private static final String USERNAME_REFINERIA = "RefineriaWeb";
+    private static final int INDEX_LIST = 11, ID_USER = 18266463;
+    private static final String USERNAME = "FuckBoilerplate";
 
     @Test public void _1_Get_Users() {
         mediumWait();
@@ -68,11 +69,11 @@ public class UsersTest extends BaseTest {
 
         onView(withId(R.id.bt_go_to_search_user)).perform(click());
 
-        onView(withId(R.id.et_name)).perform(click(), replaceText(USERNAME_REFINERIA), closeSoftKeyboard());
+        onView(withId(R.id.et_name)).perform(click(), replaceText(USERNAME), closeSoftKeyboard());
         onView(withId(R.id.bt_find_user)).perform(click());
         mediumWait();
 
-        onView(withId(R.id.tv_name)).check(matches(withText(ID_USER_REFINERIA + ":" + USERNAME_REFINERIA)));
+        onView(withId(R.id.tv_name)).check(matches(withText(containsString(ID_USER + ":" + USERNAME))));
     }
 
 }

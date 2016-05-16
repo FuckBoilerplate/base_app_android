@@ -16,9 +16,10 @@
 
 package app.sections.dashboard;
 
-import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.espresso.matcher.ViewMatchers;
 
 import org.base_app_android.R;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import app.common.BaseTest;
@@ -26,6 +27,7 @@ import app.common.BaseTest;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static app.common.ViewActions.actionCloseDrawer;
 import static app.common.ViewActions.actionOpenDrawer;
 
@@ -34,7 +36,8 @@ public class DashboardTest extends BaseTest {
     @Test public void Open_And_Close_Users() {
         onView(withId(R.id.drawer_layout)).perform(actionOpenDrawer());
         mediumWait();
-        onView(withId(R.id.rv_menu_items)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+
+        onView(Matchers.allOf(ViewMatchers.withId(R.id.navigation_view), ViewMatchers.hasDescendant(withText(R.string.users)))).perform(click());
 
         onView(withId(R.id.drawer_layout)).perform(actionCloseDrawer());
     }
@@ -43,7 +46,7 @@ public class DashboardTest extends BaseTest {
         onView(withId(R.id.drawer_layout)).perform(actionOpenDrawer());
         mediumWait();
 
-        onView(withId(R.id.rv_menu_items)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+        onView(Matchers.allOf(ViewMatchers.withId(R.id.navigation_view), ViewMatchers.hasDescendant(withText(R.string.user)))).perform(click());
 
         onView(withId(R.id.drawer_layout)).perform(actionCloseDrawer());
     }
@@ -52,7 +55,7 @@ public class DashboardTest extends BaseTest {
         onView(withId(R.id.drawer_layout)).perform(actionOpenDrawer());
         mediumWait();
 
-        onView(withId(R.id.rv_menu_items)).perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
+        onView(Matchers.allOf(ViewMatchers.withId(R.id.navigation_view), ViewMatchers.hasDescendant(withText(R.string.find_user)))).perform(click());
 
         onView(withId(R.id.drawer_layout)).perform(actionCloseDrawer());
     }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package app.common;
+package app;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

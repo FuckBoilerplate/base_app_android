@@ -41,13 +41,13 @@ public abstract class Repository {
     }
 
     protected void handleError(Response response) {
-        if (response.isSuccess()) return;
+        if (response.isSuccessful()) return;
 
         try {
             ResponseError responseError = new Gson().fromJson(response.errorBody().string(), ResponseError.class);
             throw new RuntimeException(responseError.getMessage());
         } catch (JsonParseException |IOException exception) {
-            throw new RuntimeException();
+            throw new RuntimeException(exception.getMessage());
         }
     }
 

@@ -70,6 +70,6 @@ public class Wireframe {
 
 
     public void popCurrentScreen() {
-        baseApp.getLiveActivity().finish();
+        baseApp.getLiveActivity().onBackPressed();
     }
 }

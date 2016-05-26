@@ -16,6 +16,8 @@
 
 package app.data.sections.user_demo;
 
+import com.fernandocejas.frodo.annotation.RxLogObservable;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -36,6 +38,7 @@ public class UserRepository extends Repository {
         super(restApi, rxProviders, uiUtils);
     }
 
+    @RxLogObservable
     public Observable<List<User>> getUsers(Integer lastIdQueried, final boolean refresh) {
         lastIdQueried = lastIdQueried == null ? FIRST_ID_QUERIED : lastIdQueried;
 
@@ -52,7 +55,7 @@ public class UserRepository extends Repository {
         return loader;
     }
 
-
+    @RxLogObservable
     public Observable<User> searchByUserName(final String  username) {
         return restApi.getUserByName(username).map(response -> {
             handleError(response);

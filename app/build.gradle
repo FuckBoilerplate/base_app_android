@@ -79,7 +79,9 @@ ext {
             support: "23.3.0",
             googlePlayServices: "8.4.0",
             retrofit           : "2.0.2",
-            dagger             : "2.4"
+            dagger             : "2.4",
+            rx_cache             : "1.4.6"
+
     ]
 }
 
@@ -96,8 +98,8 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     compile "com.squareup.retrofit2:adapter-rxjava:${versions.retrofit}"
     compile "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
-    compile "com.github.VictorAlbertos:RxCache:1.4.2"
-    apt "com.github.VictorAlbertos:RxCacheCompiler:0.0.2"
+    compile "com.github.VictorAlbertos.RxCache:core:${versions.rx_cache}"
+    apt "com.github.VictorAlbertos.RxCache:compiler:${versions.rx_cache}"
 
     compile "org.projectlombok:lombok:1.16.6"
 

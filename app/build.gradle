@@ -83,7 +83,7 @@ ext {
             googlePlayServices: "8.4.0",
             retrofit           : "2.0.2",
             dagger             : "2.4",
-            rx_cache             : "1.4.6"
+            rx_cache             : "1.4.7"
 
     ]
 }

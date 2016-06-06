@@ -83,7 +83,7 @@ ext {
             googlePlayServices: "8.4.0",
             retrofit           : "2.0.2",
             dagger             : "2.4",
-            rx_cache             : "1.4.8"
+            rx_cache           : "1.4.8"
 
     ]
 }
@@ -176,7 +176,7 @@ task('freshStart') << {
     String presentationTest = "app/src/androidTest/java/app/"
     Helper.removeDir(presentationTest+"sections/user_demo")
     Helper.removeDir(presentationTest+"sections/dashboard")
-    Helper.moveFileDeleting(startFresh+"SuiteIntegration", presentationTest+"common/", "SuiteIntegration.java")
+    Helper.moveFileDeleting(startFresh+"SuiteIntegration", presentationTest, "SuiteIntegration.java")
 
     String unitTest = "app/src/test/java/app/"
     Helper.moveFileDeleting(startFresh+"RestApiTest", unitTest+"data/foundation/", "RestApiTest.java")

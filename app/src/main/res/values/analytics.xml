@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources>
-    <!--https://developers.google.com/analytics/devguides/collection/android/v4/-->
-    <!--FIXME Put your tracking id and add it to your google-services.json-->
-    <string name="tracking_id" translatable="false">UA-11111111-X</string>
-</resources>

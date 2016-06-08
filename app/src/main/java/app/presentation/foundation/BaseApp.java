@@ -76,7 +76,7 @@ public class BaseApp extends Application {
 //        analytics.setAppOptOut(true);
         }
 
-        tracker = analytics.newTracker(getString(R.string.tracking_id));
+        tracker = analytics.newTracker(getString(R.string.ga_trackingId));
         tracker.enableExceptionReporting(true);
         tracker.enableAdvertisingIdCollection(true);
         tracker.enableAutoActivityTracking(false);

@@ -16,17 +16,14 @@
 
 package app.data.foundation;
 
+import app.data.foundation.cache.RxProviders;
 import app.data.foundation.net.BadResponseException;
+import app.data.foundation.net.RestApi;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-
 import java.io.IOException;
-
-import app.data.foundation.cache.RxProviders;
-import app.data.foundation.net.RestApi;
 import lombok.Data;
 import retrofit2.Response;
-import rx.Observable;
 
 
 public abstract class Repository {
@@ -54,9 +51,5 @@ public abstract class Repository {
 
     @Data private static class ResponseError {
         private final String message;
-    }
-
-    protected Observable buildObservableError(String message) {
-        return Observable.create(subscriber -> subscriber.onError(new RuntimeException(message)));
     }
 }

@@ -16,6 +16,7 @@
 
 package app.data.foundation;
 
+import app.data.foundation.net.BadResponseException;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 
@@ -45,7 +46,7 @@ public abstract class Repository {
 
         try {
             ResponseError responseError = new Gson().fromJson(response.errorBody().string(), ResponseError.class);
-            throw new RuntimeException(responseError.getMessage());
+            throw new BadResponseException(responseError.getMessage());
         } catch (JsonParseException |IOException exception) {
             throw new RuntimeException(exception.getMessage());
         }

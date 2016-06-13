@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import app.data.foundation.net.BadResponseException;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
@@ -188,7 +189,8 @@ public abstract class BaseFragment<P extends PresenterFragment> extends RxFragme
     }
 
     public Observable<String> parseException(Throwable throwable) {
-        if (!BuildConfig.DEBUG) return Observable.just(getString(R.string.errors_happen));
+        if (!BuildConfig.DEBUG && !(throwable instanceof BadResponseException))
+            return Observable.just(getString(R.string.errors_happen));
 
         String message = throwable.getMessage();
 

@@ -24,7 +24,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import app.data.foundation.net.BadResponseException;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
@@ -34,6 +33,7 @@ import org.base_app_android.R;
 import javax.inject.Inject;
 
 import app.data.foundation.analytics.GoogleAnalyticsSender;
+import app.data.foundation.net.BadResponseException;
 import app.domain.foundation.gcm.GcmNotification;
 import app.presentation.foundation.PresenterFragment;
 import app.presentation.foundation.SyncScreens;
@@ -147,9 +147,9 @@ public abstract class BaseFragment<P extends PresenterFragment> extends RxFragme
         return false;
     }
 
-    protected void setTittle(String tittle){
+    protected void setTitle(String title){
         BaseActivity baseFragmentActivity = (BaseActivity) getActivity();
-        baseFragmentActivity.setTitle(tittle);
+        baseFragmentActivity.setTitle(title);
     }
 
     protected void back() {
